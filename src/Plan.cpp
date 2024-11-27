@@ -23,6 +23,7 @@ class Plan {
             delete Plan::selectionPolicy;
             Plan::selectionPolicy = selectionPolicy;
         }
+
         void step(){
             for(int i = underConstruction.size() - 1; i >= 0; i--){
                 underConstruction[i] -> step();    
@@ -44,7 +45,15 @@ class Plan {
             underConstruction.push_back(facility);
         }
         const string toString() const{
-            String s = "PlanID: " + to_string(int(plan_id)) + "\n, SettlementName: " + settlement.getName() + "\n PlanStatus: " +to_string(int(status)) +"/n SelectionPolicy:" + to_string(int(selectionPolicy)) "\n : " + ;
+            string s = "PlanID: " + to_string(int(plan_id)) + "\n, SettlementName: " + settlement.getName() + "\n PlanStatus: " +to_string(int(status)) +"/n SelectionPolicy:" + to_string(int(selectionPolicy)) + "\n LifeQualityScore : " + to_string(life_quality_score) + "\n EconomyScore : " + to_string(economy_score) + "\n EnvironmentScore : " + to_string(environment_score) + "\n" ;
+            for(Facility* f : facilities){
+                s=s+f->toString();
+            } 
+            for(Facility* f : underConstruction){
+                s=s+f->toString();
+            } 
+
+            return s;
         }
 
         //////////////////////////////////rule of 5//////////////////////////////////
