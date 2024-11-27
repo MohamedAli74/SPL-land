@@ -1,34 +1,29 @@
 #include "../include/SelectionPolicy.h"
 #include <iostream>
+#include <climits>
 using namespace std;
+using std::max;
+using std::min;
+
 
 class NaiveSelection: public SelectionPolicy {
     public:
 
-
-
         NaiveSelection():lastSelectedIndex(-1){}
         const FacilityType& selectFacility(const vector<FacilityType>& facilitiesOptions) override
         {
-            lastSelectedIndex+=1;
-            return facilitiesOptions.at(lastSelectedIndex+1);
+            lastSelectedIndex= (lastSelectedIndex + 1) % facilitiesOptions.size() ;
+            return facilitiesOptions[lastSelectedIndex];
         }
         const string toString() const override{
             return "Naive";
         }
         NaiveSelection *clone() const override{
-            return new NaiveSelection(lastSelectedIndex);
+            return new NaiveSelection(*this);
         }
         ~NaiveSelection() override = default;
 
-        //Rule Of 3:
-
-        //copy constructor:
-         NaiveSelection(int lastSelectedIndex):lastSelectedIndex(lastSelectedIndex){}
-
-         //assignment operator:
-
-         //destructor
+        //Rule Of 3: deafult
 
     private:
         int lastSelectedIndex;
@@ -36,11 +31,47 @@ class NaiveSelection: public SelectionPolicy {
 
 class BalancedSelection: public SelectionPolicy {
     public:
-        BalancedSelection(int LifeQualityScore, int EconomyScore, int EnvironmentScore);
-        const FacilityType& selectFacility(const vector<FacilityType>& facilitiesOptions) override;
-        const string toString() const override;
-        BalancedSelection *clone() const override;
+        BalancedSelection(int LifeQualityScore, int EconomyScore, int EnvironmentScore)
+        :LifeQualityScore(LifeQualityScore),EconomyScore(EconomyScore),EnvironmentScore(EnvironmentScore){}
+
+        const FacilityType& selectFacility(const vector<FacilityType>& facilitiesOptions) override{
+            FacilityType *minDiff;
+            int diff = INT_MAX;
+            for(FacilityType f : facilitiesOptions){
+                if (calculateDiff(f)<=diff){
+                    minDiff = &f;
+                    diff = calculateDiff(f);
+                }
+                return *minDiff;
+            }
+        }
+
+        const string toString() const override{
+            return "Balanced";
+        }
+        
+        BalancedSelection *clone() const override{
+            return new BalancedSelection(*this);
+        };
+        
         ~BalancedSelection() override = default;
+
+        int getLife(){
+            return LifeQualityScore;
+        }
+
+        int getEconomy(){
+            return EconomyScore;
+        }
+
+        int getEnviroment(){
+            return EnvironmentScore;
+        }
+    
+        int calculateDiff(FacilityType& toCalculate){
+            return max(toCalculate.getEconomyScore() + getEconomy() , toCalculate.getEnvironmentScore() + getEnviroment() , toCalculate.getLifeQualityScore() + getLife())
+                        -min(toCalculate.getEconomyScore() + getEconomy() , toCalculate.getEnvironmentScore() + getEnviroment() , toCalculate.getLifeQualityScore() + getLife());
+        }
     private:
         int LifeQualityScore;
         int EconomyScore;
@@ -49,22 +80,64 @@ class BalancedSelection: public SelectionPolicy {
 
 class EconomySelection: public SelectionPolicy {
     public:
-        EconomySelection();
-        const FacilityType& selectFacility(const vector<FacilityType>& facilitiesOptions) override;
-        const string toString() const override;
-        EconomySelection *clone() const override;
+        EconomySelection():lastSelectedIndex(0)
+        {
+        }
+        const FacilityType& selectFacility(const vector<FacilityType>& facilitiesOptions) override
+        {
+            for(int i = lastSelectedIndex; i<=facilitiesOptions.size(); i=(i+1)%facilitiesOptions.size())
+            {
+                if(facilitiesOptions[i].getCategory() == FacilityCategory :: ECONOMY)
+                {
+                    lastSelectedIndex = i;
+                    return facilitiesOptions[i];
+                }
+
+            }
+        }
+        const string toString() const override
+        {
+            return "Economy";
+        }
+        EconomySelection *clone() const override
+        {
+            return new EconomySelection(*this);
+        }
         ~EconomySelection() override = default;
     private:
         int lastSelectedIndex;
 
 };
 
-class SustainabilitySelection: public SelectionPolicy {
+class SustainabilitySelection: public SelectionPolicy 
+{
     public:
-        SustainabilitySelection();
-        const FacilityType& selectFacility(const vector<FacilityType>& facilitiesOptions) override;
-        const string toString() const override;
-        SustainabilitySelection *clone() const override;
+        SustainabilitySelection():lastSelectedIndex(0)
+        {
+    
+        }
+        const FacilityType& selectFacility(const vector<FacilityType>& facilitiesOptions) override
+        {
+            for(int i = lastSelectedIndex; i <= facilitiesOptions.size(); i=(i+1)%facilitiesOptions.size())
+        
+            {
+                if(facilitiesOptions[i].getCategory() == FacilityCategory :: ENVIRONMENT)
+                {
+                    lastSelectedIndex = i;
+                    return facilitiesOptions[i];
+                }
+
+            }
+        
+        }
+        const string toString() const override
+        {
+            return "Sustainability";
+        }
+        SustainabilitySelection *clone() const override
+        {
+            return new SustainabilitySelection(*this);
+        }
         ~SustainabilitySelection() override = default;
     private:
         int lastSelectedIndex;
