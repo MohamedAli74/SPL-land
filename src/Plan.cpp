@@ -25,6 +25,12 @@ class Plan {
         }
 
         void step(){
+
+            while(underConstruction.size()<=int(settlement.getType())){
+                Facility* toAdd = new Facility(selectionPolicy -> selectFacility(facilityOptions),settlement.getName());
+                addFacility(toAdd);
+            }
+
             for(int i = underConstruction.size() - 1; i >= 0; i--){
                 underConstruction[i] -> step();    
                 //check if the facility becomes operational
@@ -35,9 +41,16 @@ class Plan {
                 }
             }
 
-            selectionPolicy -> selectFacility(facilityOptions);
+            if(underConstruction.size()==int(settlement.getType())){
+                status = PlanStatus::BUSY;
+            }else{
+                if(status == PlanStatus::BUSY)
+                    status = PlanStatus::AVALIABLE;
+            }
         }
-        void printStatus();
+        void printStatus(){
+            cout<< to_string(int(status));
+        }
         const vector<Facility*> &getFacilities() const{
             return facilities;
         }
