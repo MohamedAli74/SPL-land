@@ -1,4 +1,7 @@
 #include "../include/Plan.h"
+#include <iostream>
+#include <string>
+using namespace std;
 
 class Plan {
     public:
@@ -21,21 +24,28 @@ class Plan {
             Plan::selectionPolicy = selectionPolicy;
         }
         void step(){
-            for(int i=0;i<underConstruction.size();i++){
-                underConstruction[i] -> step();
-                
+            for(int i = underConstruction.size() - 1; i >= 0; i--){
+                underConstruction[i] -> step();    
                 //check if the facility becomes operational
-                if(int i = underConstruction.size() - 1; i >= 0; i--){
+                if(underConstruction[i] -> getStatus() == FacilityStatus::OPERATIONAL){
                     Facility* tmp = underConstruction[i];
                     underConstruction.erase(underConstruction.begin()+i);
                     facilities.push_back(tmp);
                 }
             }
+
+            selectionPolicy -> selectFacility(facilityOptions);
         }
         void printStatus();
-        const vector<Facility*> &getFacilities() const;
-        void addFacility(Facility* facility);
-        const string toString() const;
+        const vector<Facility*> &getFacilities() const{
+            return facilities;
+        }
+        void addFacility(Facility* facility){
+            underConstruction.push_back(facility);
+        }
+        const string toString() const{
+            String s = "PlanID: " + to_string(int(plan_id)) + "\n, SettlementName: " + settlement.getName() + "\n PlanStatus: " +to_string(int(status)) +"/n SelectionPolicy:" + to_string(int(selectionPolicy)) "\n : " + ;
+        }
 
         //////////////////////////////////rule of 5//////////////////////////////////
 
