@@ -6,7 +6,7 @@ using namespace std;
 class Plan {
     public:
         Plan(const int planId, const Settlement &settlement, SelectionPolicy *selectionPolicy, const vector<FacilityType> &facilityOptions):
-        plan_id(planId),settlement(settlement),facilityOptions(facilityOptions),selectionPolicy(selectionPolicy)
+        plan_id(planId),settlement(settlement),facilityOptions(facilityOptions),selectionPolicy(selectionPolicy),status(PlanStatus::AVALIABLE)
         {}
 
         //////////////////////////////////methods//////////////////////////////////
@@ -25,17 +25,21 @@ class Plan {
         }
 
         void step(){
-
-            while(underConstruction.size()<=int(settlement.getType())){
+            if(status == PlanStatus::AVALIABLE){
+            while(underConstruction.size()<=int(settlement.getType())+1){ //for example for a village(0) the limit is 0 + 1, and the same for the city and metropolis. 
                 Facility* toAdd = new Facility(selectionPolicy -> selectFacility(facilityOptions),settlement.getName());
                 addFacility(toAdd);
             }
+        }
 
             for(int i = underConstruction.size() - 1; i >= 0; i--){
                 underConstruction[i] -> step();    
                 //check if the facility becomes operational
                 if(underConstruction[i] -> getStatus() == FacilityStatus::OPERATIONAL){
                     Facility* tmp = underConstruction[i];
+                    economy_score += tmp->getEconomyScore();
+                    life_quality_score += tmp->getLifeQualityScore();
+                    environment_score += tmp->getEnvironmentScore();
                     underConstruction.erase(underConstruction.begin()+i);
                     facilities.push_back(tmp);
                 }
@@ -65,8 +69,11 @@ class Plan {
             for(Facility* f : underConstruction){
                 s=s+f->toString();
             } 
-
             return s;
+        }
+
+        PlanStatus getStatus(){
+            return status;
         }
 
         //////////////////////////////////rule of 5//////////////////////////////////

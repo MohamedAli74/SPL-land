@@ -24,12 +24,14 @@ class Simulation {
         void step();
         void close();
         void open();
+        //edit this
+        vector<Plan> plans;
 
     private:
         bool isRunning;
         int planCounter; //For assigning unique plan IDs
         vector<BaseAction*> actionsLog;
-        vector<Plan> plans;
+//        vector<Plan> plans;
         vector<Settlement> settlements;
         vector<FacilityType> facilitiesOptions;
 };

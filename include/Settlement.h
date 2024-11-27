@@ -7,7 +7,7 @@ using std::vector;
 class Facility;
 
 enum class SettlementType {
-    VILLAGE=1,
+    VILLAGE,
     CITY,
     METROPOLIS,
 };

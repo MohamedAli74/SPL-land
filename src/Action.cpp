@@ -22,10 +22,19 @@ class BaseAction{
 class SimulateStep : public BaseAction {
 
     public:
-        SimulateStep(const int numOfSteps);
-        void act(Simulation &simulation) override;
-        const string toString() const override;
-        SimulateStep *clone() const override;
+        SimulateStep(const int numOfSteps):numOfSteps(numOfSteps)
+        {}
+        void act(Simulation &simulation) override{
+            for(Plan p :simulation.plans){
+                p.step();
+            }
+        }
+        const string toString() const override{
+            return "step " + numOfSteps;
+        }
+        SimulateStep *clone() const override{
+            return new SimulateStep(*this);
+        }
     private:
         const int numOfSteps;
 };
@@ -44,10 +53,23 @@ class AddPlan : public BaseAction {
 
 class AddSettlement : public BaseAction {
     public:
-        AddSettlement(const string &settlementName,SettlementType settlementType);
-        void act(Simulation &simulation) override;
-        AddSettlement *clone() const override;
-        const string toString() const override;
+        AddSettlement(const string &settlementName,SettlementType settlementType):settlementName(settlementName),settlementType(settlementType){
+
+        }
+        void act(Simulation &simulation) override{
+            if(simulation.isSettlementExists(settlementName)){
+                this->error("Settlement already exists");
+            }else{
+            simulation.addSettlement(Settlement(settlementName , settlementType));
+            this->complete();
+            }
+        }
+        AddSettlement *clone() const override{
+            return new AddSettlement(*this);
+        }
+        const string toString() const override{
+            return "settlement " + settlementName + " " + std::to_string(int(settlementType));
+        }
     private:
         const string settlementName;
         const SettlementType settlementType;
