@@ -37,64 +37,22 @@ class BalancedSelection: public SelectionPolicy {
 
 class EconomySelection: public SelectionPolicy {
     public:
-        EconomySelection():lastSelectedIndex(0)
-        {
-        }
-        const FacilityType& selectFacility(const vector<FacilityType>& facilitiesOptions) override
-        {
-            for(int i = lastSelectedIndex; i<=facilitiesOptions.size(); i=(i+1)%facilitiesOptions.size())
-            {
-                if(facilitiesOptions[i].getCategory() == FacilityCategory :: ECONOMY)
-                {
-                    lastSelectedIndex = i;
-                    return facilitiesOptions[i];
-                }
-
-            }
-        }
-        const string toString() const override
-        {
-            return "Economy";
-        }
-        EconomySelection *clone() const override
-        {
-            return new EconomySelection(*this);
-        }
+        EconomySelection();
+        const FacilityType& selectFacility(const vector<FacilityType>& facilitiesOptions) override;
+        const string toString() const override;
+        EconomySelection *clone() const override;
         ~EconomySelection() override = default;
     private:
         int lastSelectedIndex;
 
 };
 
-class SustainabilitySelection: public SelectionPolicy 
-{
+class SustainabilitySelection: public SelectionPolicy {
     public:
-        SustainabilitySelection():lastSelectedIndex(0)
-        {
-    
-        }
-        const FacilityType& selectFacility(const vector<FacilityType>& facilitiesOptions) override
-        {
-            for(int i = lastSelectedIndex; i <= facilitiesOptions.size(); i=(i+1)%facilitiesOptions.size())
-        
-            {
-                if(facilitiesOptions[i].getCategory() == FacilityCategory :: ENVIRONMENT)
-                {
-                    lastSelectedIndex = i;
-                    return facilitiesOptions[i];
-                }
-
-            }
-        
-        }
-        const string toString() const override
-        {
-            return "Sustainability";
-        }
-        SustainabilitySelection *clone() const override
-        {
-            return new SustainabilitySelection(*this);
-        }
+        SustainabilitySelection();
+        const FacilityType& selectFacility(const vector<FacilityType>& facilitiesOptions) override;
+        const string toString() const override;
+        SustainabilitySelection *clone() const override;
         ~SustainabilitySelection() override = default;
     private:
         int lastSelectedIndex;
