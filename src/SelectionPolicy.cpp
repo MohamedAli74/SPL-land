@@ -16,7 +16,7 @@ class NaiveSelection: public SelectionPolicy {
             return facilitiesOptions[lastSelectedIndex];
         }
         const string toString() const override{
-            return "Naive";
+            return "nve";
         }
         NaiveSelection *clone() const override{
             return new NaiveSelection(*this);
@@ -47,7 +47,7 @@ class BalancedSelection: public SelectionPolicy {
         }
 
         const string toString() const override{
-            return "Balanced";
+            return "bal";
         }
         
         BalancedSelection *clone() const override{
@@ -55,7 +55,7 @@ class BalancedSelection: public SelectionPolicy {
         };
         
         ~BalancedSelection() override = default;
-
+        
         int getLife(){
             return LifeQualityScore;
         }
@@ -67,15 +67,16 @@ class BalancedSelection: public SelectionPolicy {
         int getEnviroment(){
             return EnvironmentScore;
         }
+
+    private:
+        int LifeQualityScore;
+        int EconomyScore;
+        int EnvironmentScore;
     
         int calculateDiff(FacilityType& toCalculate){
             return max(toCalculate.getEconomyScore() + getEconomy() , toCalculate.getEnvironmentScore() + getEnviroment() , toCalculate.getLifeQualityScore() + getLife())
                         -min(toCalculate.getEconomyScore() + getEconomy() , toCalculate.getEnvironmentScore() + getEnviroment() , toCalculate.getLifeQualityScore() + getLife());
         }
-    private:
-        int LifeQualityScore;
-        int EconomyScore;
-        int EnvironmentScore;
 };
 
 class EconomySelection: public SelectionPolicy {
@@ -97,7 +98,7 @@ class EconomySelection: public SelectionPolicy {
         }
         const string toString() const override
         {
-            return "Economy";
+            return "eco";
         }
         EconomySelection *clone() const override
         {
@@ -132,7 +133,7 @@ class SustainabilitySelection: public SelectionPolicy
         }
         const string toString() const override
         {
-            return "Sustainability";
+            return "env";
         }
         SustainabilitySelection *clone() const override
         {
