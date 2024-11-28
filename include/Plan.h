@@ -22,6 +22,9 @@ class Plan {
         const vector<Facility*> &getFacilities() const;
         void addFacility(Facility* facility);
         const string toString() const;
+         
+        //to iplement:
+        SelectionPolicy* getPolicy();
 
     private:
         int plan_id;
