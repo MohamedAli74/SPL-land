@@ -1,60 +1,48 @@
 #include "Facility.h"
 #include <iostream>
 
-class FacilityType {
-    public:
-        FacilityType(const string &name, const FacilityCategory category, const int price, const int lifeQuality_score, const int economy_score, const int environment_score)
+////////////////////////////FacilityType////////////////////////////
+
+        FacilityType::FacilityType(const string &name, const FacilityCategory category, const int price, const int lifeQuality_score, const int economy_score, const int environment_score)
             :name(name),category(category),price(price),lifeQuality_score(lifeQuality_score),economy_score(economy_score),environment_score(environment_score)
         {}
-        FacilityType(FacilityType &other)
-            :name(other.name),category(other.category),price(other.price),lifeQuality_score(other.lifeQuality_score),economy_score(other.economy_score),environment_score(other.environment_score)
-        {}
+//        FacilityType::FacilityType(FacilityType &other)
+//            :name(other.name),category(other.category),price(other.price),lifeQuality_score(other.lifeQuality_score),economy_score(other.economy_score),environment_score(other.environment_score)
+//        {}
 
-        const string &getName() const{
+        const string &FacilityType::getName() const{
             return name;
         }
-        int getCost() const{
+        int FacilityType::getCost() const{
             return price;
         }
-        int getLifeQualityScore() const{
+        int FacilityType::getLifeQualityScore() const{
             return lifeQuality_score;
         }
-        int getEnvironmentScore() const{
+        int FacilityType::getEnvironmentScore() const{
             return environment_score;
         }
-        int getEconomyScore() const{
+        int FacilityType::getEconomyScore() const{
             return economy_score;
         }
-        FacilityCategory getCategory() const{
+        FacilityCategory FacilityType::getCategory() const{
             return category;
         }
 
-    protected:
-        const string name;
-        const FacilityCategory category;
-        const int price;
-        const int lifeQuality_score;
-        const int economy_score;
-        const int environment_score;
-};
+////////////////////////////Facility////////////////////////////
 
-
-
-class Facility: public FacilityType {
-
-    public:
-        Facility(const string &name, const string &settlementName, const FacilityCategory category, const int price, const int lifeQuality_score, const int economy_score, const int environment_score)
+        Facility::Facility(const string &name, const string &settlementName, const FacilityCategory category, const int price, const int lifeQuality_score, const int economy_score, const int environment_score)
         :FacilityType(name,category,price,lifeQuality_score,economy_score,environment_score),settlementName(settlementName){}
-        Facility(FacilityType &type, const string &settlementName):FacilityType(type),settlementName(settlementName){}
-        Facility(Facility &other)
+        Facility::Facility(FacilityType &type, const string &settlementName):FacilityType(type),settlementName(settlementName){}
+        Facility::Facility(Facility &other)
         :FacilityType(other.name,other.category,other.price,other.lifeQuality_score,other.economy_score,other.environment_score),settlementName(other.settlementName){}
-        const string &getSettlementName() const{
+        const string &Facility::getSettlementName() const{
             return settlementName;
         }
-        const int getTimeLeft() const{
+        const int Facility::getTimeLeft() const{
             return timeLeft;
         }
-        FacilityStatus step(){
+        FacilityStatus Facility::step(){
             timeLeft = timeLeft - 1; 
             if(timeLeft == 0)
             {
@@ -63,19 +51,12 @@ class Facility: public FacilityType {
             return status;
         }
         
-        void setStatus(FacilityStatus status){
+        void Facility::setStatus(FacilityStatus status){
             this-> status = status;
         }
-        const FacilityStatus& getStatus() const{
+        const FacilityStatus& Facility::getStatus() const{
             return status;
         }
-        const string toString() const{
+        const string Facility::toString() const{
             return "FacilityName = "+name +"/n FacilityStatus = "+ std::to_string(int(status));
-        };
-        //rule of 5 needed
-
-    private:
-        const string settlementName;
-        FacilityStatus status;
-        int timeLeft;
-};
+        }

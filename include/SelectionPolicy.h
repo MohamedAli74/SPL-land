@@ -33,6 +33,11 @@ class BalancedSelection: public SelectionPolicy {
         int LifeQualityScore;
         int EconomyScore;
         int EnvironmentScore;
+
+        int getLife() const;
+        int getEconomy() const;
+        int getEnviroment() const;
+        int calculateDiff(FacilityType& toCalculate);
 };
 
 class EconomySelection: public SelectionPolicy {

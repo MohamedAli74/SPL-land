@@ -35,6 +35,7 @@ class SimulateStep : public BaseAction {
         void act(Simulation &simulation) override;
         const string toString() const override;
         SimulateStep *clone() const override;
+
     private:
         const int numOfSteps;
 };
@@ -48,6 +49,9 @@ class AddPlan : public BaseAction {
     private:
         const string settlementName;
         const string selectionPolicy;
+
+        SelectionPolicy* policy;
+        bool flag;
 };
 
 
@@ -100,6 +104,8 @@ class ChangePlanPolicy : public BaseAction {
     private:
         const int planId;
         const string newPolicy;
+
+        SelectionPolicy* SelectPolicy(const string& policy, Plan& p );
 };
 
 

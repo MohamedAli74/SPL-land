@@ -24,14 +24,17 @@ class Simulation {
         void step();
         void close();
         void open();
-        //edit this
-        vector<Plan> plans;
+
+        vector<Plan> &getPlans() const;
+        vector<FacilityType> &getOptions() const;
+        bool PlanExists(const int planID) const;
+        vector<BaseAction*> &getLogActions() const;
 
     private:
         bool isRunning;
         int planCounter; //For assigning unique plan IDs
         vector<BaseAction*> actionsLog;
-//        vector<Plan> plans;
+        vector<Plan> plans;
         vector<Settlement> settlements;
         vector<FacilityType> facilitiesOptions;
 };
