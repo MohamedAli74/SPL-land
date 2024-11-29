@@ -108,9 +108,7 @@ using std::min;
                     lastSelectedIndex = i;
                     return facilitiesOptions[i];
                 }
-
             }
-        
         }
         const string SustainabilitySelection::toString() const
         {
