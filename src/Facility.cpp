@@ -34,8 +34,8 @@
         Facility::Facility(const string &name, const string &settlementName, const FacilityCategory category, const int price, const int lifeQuality_score, const int economy_score, const int environment_score)
         :FacilityType(name,category,price,lifeQuality_score,economy_score,environment_score),settlementName(settlementName){}
         Facility::Facility(FacilityType &type, const string &settlementName):FacilityType(type),settlementName(settlementName){}
-        Facility::Facility(Facility &other)
-        :FacilityType(other.name,other.category,other.price,other.lifeQuality_score,other.economy_score,other.environment_score),settlementName(other.settlementName){}
+//        Facility::Facility(Facility &other)
+//        :FacilityType(other.name,other.category,other.price,other.lifeQuality_score,other.economy_score,other.environment_score),settlementName(other.settlementName){}
         const string &Facility::getSettlementName() const{
             return settlementName;
         }
