@@ -61,7 +61,6 @@ using std::min;
         int BalancedSelection::getEnviroment() const{
             return EnvironmentScore;
         }
-    
         int BalancedSelection::calculateDiff(FacilityType& toCalculate){
             return max(toCalculate.getEconomyScore() + getEconomy() , toCalculate.getEnvironmentScore() + getEnviroment() , toCalculate.getLifeQualityScore() + getLife())
                         -min(toCalculate.getEconomyScore() + getEconomy() , toCalculate.getEnvironmentScore() + getEnviroment() , toCalculate.getLifeQualityScore() + getLife());
