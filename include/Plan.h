@@ -26,6 +26,8 @@ class Plan {
         //to iplement:
         SelectionPolicy* getPolicy();
 
+        PlanStatus Plan::getStatus();
+
     private:
         int plan_id;
         const Settlement &settlement;

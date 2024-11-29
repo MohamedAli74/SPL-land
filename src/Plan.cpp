@@ -3,39 +3,41 @@
 #include <string>
 using namespace std;
 
-class Plan {
-    public:
-        Plan(const int planId, const Settlement &settlement, SelectionPolicy *selectionPolicy, const vector<FacilityType> &facilityOptions):
+        Plan::Plan(const int planId, const Settlement &settlement, SelectionPolicy *selectionPolicy, const vector<FacilityType> &facilityOptions):
         plan_id(planId),settlement(settlement),facilityOptions(facilityOptions),selectionPolicy(selectionPolicy),status(PlanStatus::AVALIABLE)
-        {}
+        {
+        }
 
         //////////////////////////////////methods//////////////////////////////////
-        const int getlifeQualityScore() const{
+        const int Plan::getlifeQualityScore() const{
             return life_quality_score;
         }
-        const int getEconomyScore() const{
+        const int Plan::getEconomyScore() const{
             return economy_score;
         }
-        const int getEnvironmentScore() const{
+        const int Plan::getEnvironmentScore() const{
             return environment_score;
         }
-        void setSelectionPolicy(SelectionPolicy *selectionPolicy){
+        void Plan::setSelectionPolicy(SelectionPolicy *selectionPolicy){
             delete Plan::selectionPolicy;
             Plan::selectionPolicy = selectionPolicy;
         }
 
-        void step(){
+        void Plan::step(){
             if(status == PlanStatus::AVALIABLE){
-            while(underConstruction.size()<=int(settlement.getType())+1){ //for example for a village(0) the limit is 0 + 1, and the same for the city and metropolis. 
-                Facility* toAdd = new Facility(selectionPolicy -> selectFacility(facilityOptions),settlement.getName());
-                addFacility(toAdd);
+            while(underConstruction.size()<=int(settlement.getType())+1)
+            { //for example for a village(0) the limit is 0 + 1, and the same for the city and metropolis. 
+            FacilityType newfacitype = selectionPolicy -> selectFacility(facilityOptions);
+            Facility* toAdd = new Facility(newfacitype,settlement.getName());//Kareem: why this reqiered
+            addFacility(toAdd);
             }
         }
 
             for(int i = underConstruction.size() - 1; i >= 0; i--){
                 underConstruction[i] -> step();    
                 //check if the facility becomes operational
-                if(underConstruction[i] -> getStatus() == FacilityStatus::OPERATIONAL){
+                if(underConstruction[i] -> getStatus() == FacilityStatus::OPERATIONAL)
+                {
                     Facility* tmp = underConstruction[i];
                     economy_score += tmp->getEconomyScore();
                     life_quality_score += tmp->getLifeQualityScore();
@@ -52,17 +54,18 @@ class Plan {
                     status = PlanStatus::AVALIABLE;
             }
         }
-        void printStatus(){
+        void Plan::printStatus(){
             cout<< to_string(int(status));
         }
-        const vector<Facility*> &getFacilities() const{
+        const vector<Facility*> &Plan::getFacilities() const{
             return facilities;
         }
-        void addFacility(Facility* facility){
+        void Plan::addFacility(Facility* facility)
+        {
             underConstruction.push_back(facility);
         }
-        const string toString() const{
-            string s = "PlanID: " + to_string(int(plan_id)) + "\n, SettlementName: " + settlement.getName() + "\n PlanStatus: " +to_string(int(status)) +"/n SelectionPolicy:" + to_string(int(selectionPolicy)) + "\n LifeQualityScore : " + to_string(life_quality_score) + "\n EconomyScore : " + to_string(economy_score) + "\n EnvironmentScore : " + to_string(environment_score) + "\n" ;
+        const string Plan::toString() const{
+            string s = "PlanID: " + to_string(int(plan_id)) + "\n, SettlementName: " + settlement.getName() + "\n PlanStatus: " +to_string(int(status)) +"/n SelectionPolicy: " + selectionPolicy->toString() + "\n LifeQualityScore : " + to_string(life_quality_score) + "\n EconomyScore : " + to_string(economy_score) + "\n EnvironmentScore : " + to_string(environment_score) + "\n" ;
             for(Facility* f : facilities){
                 s=s+f->toString();
             } 
@@ -72,23 +75,13 @@ class Plan {
             return s;
         }
 
-        PlanStatus getStatus(){
+        PlanStatus Plan::getStatus()
+        {
             return status;
         }
 
         //////////////////////////////////rule of 5//////////////////////////////////
 
-        ~Plan(){
+        Plan::~Plan(){
             delete selectionPolicy;
         }
-
-    private:
-        int plan_id;
-        const Settlement &settlement;
-        SelectionPolicy *selectionPolicy; //What happens if we change this to a reference?
-        PlanStatus status;
-        vector<Facility*> facilities;
-        vector<Facility*> underConstruction;
-        const vector<FacilityType> &facilityOptions;
-        int life_quality_score, economy_score, environment_score;
-};
