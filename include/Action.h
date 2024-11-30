@@ -104,6 +104,7 @@ class ChangePlanPolicy : public BaseAction {
     private:
         const int planId;
         const string newPolicy;
+        string s;
 
         SelectionPolicy* SelectPolicy(const string& policy, Plan& p );
 };
