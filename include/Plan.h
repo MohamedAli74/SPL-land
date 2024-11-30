@@ -24,9 +24,10 @@ class Plan {
         const string toString() const;
          
         //to iplement:
-        SelectionPolicy* getPolicy();
-
-        PlanStatus Plan::getStatus();
+        SelectionPolicy* getPolicy() const;
+        PlanStatus getStatus() const;
+        Plan& operator=(const Plan& other);
+        
 
     private:
         int plan_id;

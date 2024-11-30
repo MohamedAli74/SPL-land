@@ -75,7 +75,7 @@ using namespace std;
             return s;
         }
 
-        PlanStatus Plan::getStatus()
+        PlanStatus Plan::getStatus() const
         {
             return status;
         }
