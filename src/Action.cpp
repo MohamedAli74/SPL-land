@@ -1,7 +1,7 @@
 #include "../include/Action.h"
 #include <iostream>
 using namespace std;
-
+#include <string>
 ////////////////////////////BaseAction////////////////////////////
 
     BaseAction::BaseAction()
@@ -85,7 +85,14 @@ using namespace std;
         
         const string AddPlan::toString() const 
         {
-            std::string s = "plan" + settlementName + selectionPolicy;
+            if (getStatus() == ActionStatus ::COMPLETED)
+            {
+                return "Plan added: " + settlementName+" " + selectionPolicy + " COMPLETED";
+            }
+            else
+            {
+                return "Cannot create this plan";
+            }
         }
         
         AddPlan *AddPlan::clone() const 
@@ -120,27 +127,40 @@ using namespace std;
 ////////////////////////////AddFacility////////////////////////////
 
         AddFacility::AddFacility(const string &facilityName, const FacilityCategory facilityCategory, const int price, const int lifeQualityScore, const int economyScore, const int environmentScore)
-        :facilityName(facilityName),facilityCategory(facilityCategory),price(price),lifeQualityScore(lifeQualityScore),economyScore(economyScore),environmentScore(environmentScore){}
+        :BaseAction(),facilityName(facilityName),facilityCategory(facilityCategory),price(price),lifeQualityScore(lifeQualityScore),economyScore(economyScore),environmentScore(economyScore)
+        {
+            flag = true;
+        }
         
-        void AddFacility::act(Simulation &simulation) {
-            vector<FacilityType>& facilityList=simulation.getOptions();
-            for(FacilityType& t : facilityList){
-                if(t.getName() == facilityName){
-                    error("Facility already exists");
-                }
-            }
-            if((this->getStatus() != ActionStatus::ERROR)){
-                facilityList.push_back(FacilityType(facilityName,facilityCategory,price,lifeQualityScore,economyScore,environmentScore));
+        void AddFacility::act(Simulation &simulation) 
+        {
+            FacilityType newfacitype(facilityName,facilityCategory,price,lifeQualityScore,economyScore,environmentScore);
+            flag = simulation.addFacility(newfacitype);
+            if (flag)
+            {
                 complete();
             }
+            else
+            {
+                error("Facility already exists");
+            }
+            
         }
         
         AddFacility *AddFacility::clone() const {
             return new AddFacility(*this);
         }
         
-        const string AddFacility::toString() const {
-            return "facility " + facilityName + " " + to_string(int(facilityCategory)) +" " + to_string(price) +" " + to_string(lifeQualityScore) +" " + to_string(economyScore) +" " + to_string(environmentScore);
+        const string AddFacility::toString() const 
+        {
+            if (ActionStatus::COMPLETED == getStatus())
+            {
+                return "Facility added: " +facilityName+" " + to_string(int(facilityCategory)) + to_string(price) + to_string(lifeQualityScore)+ " "+to_string(economyScore)+" " + to_string(economyScore) + " Completed";
+            }
+            else
+            {
+                return "Facility already exists";
+            }
         }
     
 ////////////////////////////PrintPlanStatus////////////////////////////
@@ -161,19 +181,29 @@ using namespace std;
             return new PrintPlanStatus(*this);
         }
         
-        const string PrintPlanStatus::toString() const {
-            return "PlanStatus " + to_string(planId);
+        const string PrintPlanStatus::ttoString() const 
+        {
+            if (ActionStatus::COMPLETED == getStatus())
+            {
+                return "planId: "+planId;
+            }
+            else
+            {
+                return "Plan doesn't exist";
+            }
+        }
         }
 
 ////////////////////////////ChangePolicy////////////////////////////
 
         ChangePlanPolicy::ChangePlanPolicy(const int planId, const string &newPolicy)
-        :planId(planId),newPolicy(newPolicy){}
+        :planId(planId),newPolicy(newPolicy){ s = "";       }
         
         void ChangePlanPolicy::act(Simulation &simulation) {
             if(simulation.PlanExists(planId)){
                 Plan & p = simulation.getPlan(planId);
-                if(p.getPolicy()->toString() == newPolicy){
+                s = p.getPolicy()->toString();
+                if(s == newPolicy){
                     error("Cannot change selection policy");
                 }else{
                     p.setSelectionPolicy(SelectPolicy(newPolicy,p));
@@ -186,8 +216,16 @@ using namespace std;
             return new ChangePlanPolicy(*this);
         }
 
-        const string ChangePlanPolicy::toString() const {
-            return "changePolicy " + to_string(planId) + newPolicy ; 
+        const string ChangePlanPolicy::toString() const override
+        {
+            if (ActionStatus::COMPLETED == getStatus())
+            {
+                return "planId: "+to_string(planId) + "/n previousPolicy: "+s+ "/n newPolicy: "+ newPolicy; 
+            }
+            else
+            {
+                return "Cannot change selection policy";
+            }
         }
 
         SelectionPolicy *ChangePlanPolicy::SelectPolicy(const string& policy, Plan& p ){
