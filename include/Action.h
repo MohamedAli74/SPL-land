@@ -81,6 +81,7 @@ class AddFacility : public BaseAction {
         const int lifeQualityScore;
         const int economyScore;
         const int environmentScore;
+        bool flag;
 
 };
 
