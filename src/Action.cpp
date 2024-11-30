@@ -255,33 +255,22 @@ using namespace std;
 
 ////////////////////////////Close////////////////////////////
 
-class Close : public BaseAction {
-    public:
-        Close();
-        void act(Simulation &simulation) ;
-        Close *clone() const ;
-        const string toString() const ;
-    private:
-};
+        Close::Close(){};
+        void Close::act(Simulation &simulation){}
+        Close *Close::clone() const {}
+        const string Close::toString() const {}
 
 ////////////////////////////BackupSimulation////////////////////////////
 
-class BackupSimulation : public BaseAction {
-    public:
-        BackupSimulation();
-        void act(Simulation &simulation) ;
-        BackupSimulation *clone() const ;
-        const string toString() const ;
-    private:
-};
+        BackupSimulation::BackupSimulation(){}
+        void BackupSimulation::act(Simulation &simulation){}
+        BackupSimulation *BackupSimulation::clone() const {}
+        const string BackupSimulation::toString() const{}
 
 ////////////////////////////RestoreSimulation////////////////////////////
 
-class RestoreSimulation : public BaseAction {
-    public:
-        RestoreSimulation();
-        void act(Simulation &simulation) ;
-        RestoreSimulation *clone() const ;
-        const string toString() const ;
-    private:
-};
+        RestoreSimulation::RestoreSimulation(){}
+        void RestoreSimulation::act(Simulation &simulation){}
+        RestoreSimulation *RestoreSimulation::clone() const{}
+        const string RestoreSimulation::toString() const{}
+

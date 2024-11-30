@@ -82,6 +82,6 @@ using namespace std;
 
         //////////////////////////////////rule of 5//////////////////////////////////
 
-        Plan::~Plan(){
-            delete selectionPolicy;
-        }
+//        Plan::~Plan(){
+//            delete selectionPolicy;
+//        }
