@@ -181,7 +181,7 @@ using namespace std;
             return new PrintPlanStatus(*this);
         }
         
-        const string PrintPlanStatus::ttoString() const 
+        const string PrintPlanStatus::toString() const 
         {
             if (ActionStatus::COMPLETED == getStatus())
             {
@@ -216,7 +216,7 @@ using namespace std;
             return new ChangePlanPolicy(*this);
         }
 
-        const string ChangePlanPolicy::toString() const override
+        const string ChangePlanPolicy::toString() const 
         {
             if (ActionStatus::COMPLETED == getStatus())
             {
