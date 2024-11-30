@@ -31,7 +31,7 @@ using namespace std;
 
 ////////////////////////////SimulateStip////////////////////////////
     
-        SimulateStep::SimulateStep(const int numOfSteps):numOfSteps(numOfSteps)
+        SimulateStep::SimulateStep(const int numOfSteps):BaseAction(),numOfSteps(numOfSteps)
         {}
 
         void SimulateStep::act(Simulation &simulation) {
@@ -51,7 +51,7 @@ using namespace std;
 ////////////////////////////AddPlan////////////////////////////
 
         AddPlan::AddPlan(const string &settlementName, const string &selectionPolicy)
-        :settlementName(settlementName),selectionPolicy(selectionPolicy),flag(true),policy(nullptr)
+        :BaseAction(),settlementName(settlementName),selectionPolicy(selectionPolicy),flag(true),policy(nullptr)
         {
             if(selectionPolicy == "nve"){
                 policy = new NaiveSelection();
@@ -105,7 +105,7 @@ using namespace std;
 ////////////////////////////AddSettlement////////////////////////////
 
         AddSettlement::AddSettlement(const string &settlementName,SettlementType settlementType)
-            :settlementName(settlementName),settlementType(settlementType){}
+            :BaseAction(),settlementName(settlementName),settlementType(settlementType){}
         
         void AddSettlement::act(Simulation &simulation) {
             if(simulation.isSettlementExists(settlementName)){
@@ -166,7 +166,7 @@ using namespace std;
 ////////////////////////////PrintPlanStatus////////////////////////////
 
 
-        PrintPlanStatus::PrintPlanStatus(int planId):planId(planId){}
+        PrintPlanStatus::PrintPlanStatus(int planId):BaseAction(),planId(planId){}
         
         void PrintPlanStatus::act(Simulation &simulation) {
             if(simulation.PlanExists(planId)){
@@ -197,7 +197,9 @@ using namespace std;
 ////////////////////////////ChangePolicy////////////////////////////
 
         ChangePlanPolicy::ChangePlanPolicy(const int planId, const string &newPolicy)
-        :planId(planId),newPolicy(newPolicy){ s = "";       }
+        :BaseAction(),planId(planId),newPolicy(newPolicy)
+        {  
+        }
         
         void ChangePlanPolicy::act(Simulation &simulation) {
             if(simulation.PlanExists(planId)){
