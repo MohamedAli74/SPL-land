@@ -268,9 +268,9 @@ using namespace std;
 
 ////////////////////////////Close////////////////////////////
 
-        Close::Close(){}
+        Close::Close():BaseAction(){}
         
-        void Close::act(Simulation &simulation):BaseAction(){
+        void Close::act(Simulation &simulation){
             for(Plan &p : simulation.getPlans()){
                 cout<< p.toString() << endl;
             }
