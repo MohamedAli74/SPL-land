@@ -247,17 +247,22 @@ using namespace std;
 ////////////////////////////PrintActionsLog////////////////////////////
 
 
-    PrintActionsLog::PrintActionsLog(){}
-    void PrintActionsLog::act(Simulation &simulation) {
-        for(BaseAction *a : simulation.getLogActions()){
-            
+    PrintActionsLog::PrintActionsLog():BaseAction(){}
+    void PrintActionsLog::act(Simulation &simulation) 
+    {
+        for(BaseAction *action: simulation.getLogActions())
+        {
+            cout<<action->toString()<<endl;
         }
+        complete();
     }
-    PrintActionsLog *PrintActionsLog::clone() const {
-        return new PrintActionsLog(*this);
+    PrintActionsLog *PrintActionsLog::clone() const 
+    {
+        return new PrintActionsLog();
     }
-    const string PrintActionsLog::toString() const {
-        return "log";
+    const string PrintActionsLog::toString() const 
+    {
+        return "PrintActionsLog "+ to_string(int(getStatus()));
     }
 
 
@@ -265,11 +270,12 @@ using namespace std;
 
         Close::Close(){}
         
-        void Close::act(Simulation &simulation){
+        void Close::act(Simulation &simulation):BaseAction(){
             for(Plan &p : simulation.getPlans()){
                 cout<< p.toString() << endl;
             }
             simulation.close();
+            complete();
         }
         
         Close *Close::clone() const {
@@ -277,7 +283,7 @@ using namespace std;
         }
         
         const string Close::toString() const {
-            return "Close" ;
+            return "Close "+ to_string(int(getStatus())); ;
         }
 
 ////////////////////////////BackupSimulation////////////////////////////
