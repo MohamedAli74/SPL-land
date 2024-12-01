@@ -2,6 +2,7 @@
 #include <iostream>
 using namespace std;
 #include <string>
+extern Simulation* backup;
 ////////////////////////////BaseAction////////////////////////////
 
     BaseAction::BaseAction()
@@ -172,7 +173,8 @@ using namespace std;
             if(simulation.PlanExists(planId)){
                 std::cout << simulation.getPlan(planId).toString() ;
                 complete();
-            }else{
+            }else
+            {
                 error("Plan doesn’t exist");
             }
         }
@@ -222,7 +224,7 @@ using namespace std;
         {
             if (ActionStatus::COMPLETED == getStatus())
             {
-                return "PlanId: "+to_string(planId) + "/n previousPolicy: "+s+ "/n newPolicy: "+ newPolicy; 
+                return "planId: "+to_string(planId) + "/n previousPolicy: "+s+ "/n newPolicy: "+ newPolicy; 
             }
             else
             {
@@ -262,13 +264,13 @@ using namespace std;
     }
     const string PrintActionsLog::toString() const 
     {
-        return "PrintActionsLog "+ to_string(int(getStatus()));
+        return "Log "+ to_string(int(getStatus()));
     }
 
 
 ////////////////////////////Close////////////////////////////
 
-        Close::Close():BaseAction(){}
+Close::Close():BaseAction(){}
         
         void Close::act(Simulation &simulation){
             for(Plan &p : simulation.getPlans()){
@@ -286,17 +288,51 @@ using namespace std;
             return "Close "+ to_string(int(getStatus())); ;
         }
 
+
 ////////////////////////////BackupSimulation////////////////////////////
 
-        BackupSimulation::BackupSimulation(){}
-        void BackupSimulation::act(Simulation &simulation){}
-        BackupSimulation *BackupSimulation::clone() const {}
-        const string BackupSimulation::toString() const{}
+        BackupSimulation::BackupSimulation():BaseAction(){}
+        void BackupSimulation::act(Simulation &simulation)
+        {
+            if (backup == &simulation)
+            {
+                backup = &simulation; //Kareem:this assignment operator or copy construcor?
+                complete();
+            }
+        }
+        BackupSimulation *BackupSimulation::clone() const 
+        {
+           return new BackupSimulation(); 
+        }
+        const string BackupSimulation::toString() const
+        {
+            return "backup "+to_string(int(getStatus()));
+        }
 
 ////////////////////////////RestoreSimulation////////////////////////////
 
-        RestoreSimulation::RestoreSimulation(){}
-        void RestoreSimulation::act(Simulation &simulation){}
-        RestoreSimulation *RestoreSimulation::clone() const{}
-        const string RestoreSimulation::toString() const{}
+        RestoreSimulation::RestoreSimulation():BaseAction(){}
 
+        void RestoreSimulation::act(Simulation &simulation)
+        {
+            if (backup != nullptr)
+            {
+                simulation = *backup;
+                complete();
+            }
+            else
+            {
+                error("No backup available");
+            }
+            
+        }
+        
+        RestoreSimulation *RestoreSimulation::clone() const
+        {
+            return new RestoreSimulation();
+        }
+        
+        const string RestoreSimulation::toString() const
+        {
+            return "restore "+to_string(int(getStatus()));
+        }
