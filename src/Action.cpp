@@ -222,7 +222,7 @@ using namespace std;
         {
             if (ActionStatus::COMPLETED == getStatus())
             {
-                return "planId: "+to_string(planId) + "/n previousPolicy: "+s+ "/n newPolicy: "+ newPolicy; 
+                return "PlanId: "+to_string(planId) + "/n previousPolicy: "+s+ "/n newPolicy: "+ newPolicy; 
             }
             else
             {
@@ -248,17 +248,37 @@ using namespace std;
 
 
     PrintActionsLog::PrintActionsLog(){}
-    void PrintActionsLog::act(Simulation &simulation) {}
-    PrintActionsLog *PrintActionsLog::clone() const {}
-    const string PrintActionsLog::toString() const {}
+    void PrintActionsLog::act(Simulation &simulation) {
+        for(BaseAction *a : simulation.getLogActions()){
+            
+        }
+    }
+    PrintActionsLog *PrintActionsLog::clone() const {
+        return new PrintActionsLog(*this);
+    }
+    const string PrintActionsLog::toString() const {
+        return "log";
+    }
 
 
 ////////////////////////////Close////////////////////////////
 
-        Close::Close(){};
-        void Close::act(Simulation &simulation){}
-        Close *Close::clone() const {}
-        const string Close::toString() const {}
+        Close::Close(){}
+        
+        void Close::act(Simulation &simulation){
+            for(Plan &p : simulation.getPlans()){
+                cout<< p.toString() << endl;
+            }
+            simulation.close();
+        }
+        
+        Close *Close::clone() const {
+            return new Close(*this);
+        }
+        
+        const string Close::toString() const {
+            return "Close" ;
+        }
 
 ////////////////////////////BackupSimulation////////////////////////////
 
