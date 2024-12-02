@@ -7,8 +7,11 @@ using std::string;
 class Simulation {
     public:
         Simulation(const string &configFilePath);
+        
+        
         void start()
         {
+            open();
             cout<< "The simulation has started";
         }
         
@@ -104,15 +107,13 @@ class Simulation {
             isRunning = false;
         }
 
-        //~Simulation()
-        //{
-           // for(BaseAction* action : actionsLog)
-            //{
-            //    delete(action);
-              //  delete backup;
-            //}
-
-       // }
+        ~Simulation()
+        {
+           for(BaseAction* action : actionsLog)
+            {
+                delete action;                                
+            }
+        }
 
         void open()
         {
@@ -128,9 +129,17 @@ class Simulation {
         {
             return facilitiesOptions;
         }
+        
         bool PlanExists(const int planID) 
         {
-            
+            for(Plan plan : plans)
+            {
+                if (plan.getPlanId() == planID)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
         vector<BaseAction*> &getLogActions() 
         {

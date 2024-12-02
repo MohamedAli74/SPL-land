@@ -28,8 +28,8 @@ class Plan {
         int getPlanId();
         SelectionPolicy* getPolicy() const;
         PlanStatus getStatus() const;
-        Plan::Plan( Plan&& other);
-        Plan::Plan(const Plan& other);
+        Plan( Plan&& other);
+        Plan(const Plan& other);
 
         
 
