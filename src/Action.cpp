@@ -291,14 +291,18 @@ Close::Close():BaseAction(){}
 
 ////////////////////////////BackupSimulation////////////////////////////
 
+        ////////////////////////////BackupSimulation////////////////////////////
+
         BackupSimulation::BackupSimulation():BaseAction(){}
         void BackupSimulation::act(Simulation &simulation)
         {
-            if (backup == &simulation)
+            if (backup != &simulation)
             {
-                backup = &simulation; //Kareem:this assignment operator or copy construcor?
+                delete backup;
+                backup = new Simulation(simulation); //Kareem:this assignment operator or copy construcor?
                 complete();
             }
+                
         }
         BackupSimulation *BackupSimulation::clone() const 
         {
