@@ -28,7 +28,7 @@ extern Simulation* backup;
         
         const string &BaseAction::getErrorMsg() const
         {
-            return errorMsg;
+            return errorMsg; 
         }
 
 ////////////////////////////SimulateStip////////////////////////////
