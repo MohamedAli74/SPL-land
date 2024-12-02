@@ -25,10 +25,10 @@ class Simulation {
         void close();
         void open();
 
-        vector<Plan> &getPlans() const;
-        vector<FacilityType> &getOptions() const;
-        bool PlanExists(const int planID) const;
-        vector<BaseAction*> &getLogActions() const;
+        vector<Plan> &getPlans();
+        vector<FacilityType> &getOptions();
+        bool PlanExists(const int planID);
+        vector<BaseAction*> &getLogActions();
 
     private:
         bool isRunning;

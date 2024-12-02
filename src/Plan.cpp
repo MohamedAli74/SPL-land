@@ -9,6 +9,10 @@ using namespace std;
         }
 
         //////////////////////////////////methods//////////////////////////////////
+        int Plan::getPlanId()
+        {
+            return plan_id;
+        }
         const int Plan::getlifeQualityScore() const{
             return life_quality_score;
         }
@@ -82,6 +86,27 @@ using namespace std;
 
         //////////////////////////////////rule of 5//////////////////////////////////
 
-//        Plan::~Plan(){
-//            delete selectionPolicy;
-//        }
+        Plan::~Plan()
+        {
+            delete selectionPolicy;
+            for (Facility* facility : facilities)
+            {
+                delete facility;
+            }
+            for (Facility* facility : underConstruction)
+            {
+                delete facility;
+            }
+        }
+        
+        Plan::Plan(const Plan& other)
+        :plan_id(other.plan_id),settlement(other.settlement),status(other.status),facilities(other.facilities),underConstruction(other.underConstruction),facilityOptions(other.facilityOptions),life_quality_score(other.life_quality_score),economy_score(other.economy_score),environment_score(other.environment_score)
+        {
+            delete selectionPolicy;
+            selectionPolicy=other.selectionPolicy->clone();
+        }
+
+        Plan::Plan(Plan&& other):plan_id(other.plan_id),settlement(other.settlement),status(other.status),facilities(other.facilities),underConstruction(other.underConstruction),facilityOptions(other.facilityOptions),life_quality_score(other.life_quality_score),economy_score(other.economy_score),environment_score(other.environment_score),selectionPolicy(other.selectionPolicy)
+        {
+            other.selectionPolicy = nullptr;
+        }
