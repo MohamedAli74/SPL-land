@@ -12,6 +12,7 @@ extern Simulation* backup;
     ActionStatus BaseAction::getStatus() const
         {
             return status;
+        
         }
 
         void BaseAction::complete()
