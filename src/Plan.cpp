@@ -98,7 +98,7 @@ using namespace std;
                 delete facility;
             }
         }
-        
+
         Plan::Plan(const Plan& other)
         :plan_id(other.plan_id),settlement(other.settlement),status(other.status),facilities(other.facilities),underConstruction(other.underConstruction),facilityOptions(other.facilityOptions),life_quality_score(other.life_quality_score),economy_score(other.economy_score),environment_score(other.environment_score)
         {
@@ -110,4 +110,3 @@ using namespace std;
         {
             other.selectionPolicy = nullptr;
         }
-        
