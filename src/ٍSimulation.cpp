@@ -104,28 +104,38 @@ class Simulation {
             isRunning = false;
         }
 
+        ~Simulation()
+        {
+            for(BaseAction* action : actionsLog)
+            {
+                delete(action);
+                delete backup;
+            }
+
+        }
+
         void open()
         {
             isRunning = true;
         }
 
-        //vector<Plan> &getPlans() const
-        //{
-          //   vector<Plan>& vector = plans;
-            //return vector;
-        //}
+        vector<Plan> &getPlans() const
+        {
+           vector<Plan>& vector = plans;
+            return vector;
+        }
         
-        //vector<FacilityType> &getOptions() const
-        //{
-            //  vector<FacilityType>& vector = facilitiesOptions;
-            //return vector;
-        //}
-        //bool PlanExists(const int planID) const;
-        //vector<BaseAction*> &getLogActions() const
-        //{
-          //  vector<BaseAction*>& vector = actionsLog;
-            //return vector; 
-        //}
+        vector<FacilityType> &getOptions() const
+        {
+            vector<FacilityType>& vector = facilitiesOptions;
+            return vector;
+        }
+        bool PlanExists(const int planID) const;
+        vector<BaseAction*> &getLogActions() const
+        {
+ //           vector<BaseAction*>& vector = ;
+            return actionsLog;
+        }
 
     private:
         bool isRunning;

@@ -5,6 +5,7 @@ using namespace std;
 class Settlement {
     public:
         Settlement(const string &name, SettlementType type):name(name),type(type){}
+        Settlement(const Settlement& other);
         const string &getName() const{
             return name;
         }

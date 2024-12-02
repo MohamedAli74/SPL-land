@@ -10,6 +10,7 @@ enum class PlanStatus {
     BUSY,
 };
 
+
 class Plan {
     public:
         Plan(const int planId, const Settlement &settlement, SelectionPolicy *selectionPolicy, const vector<FacilityType> &facilityOptions);
@@ -23,10 +24,13 @@ class Plan {
         void addFacility(Facility* facility);
         const string toString() const;
          
-        //to iplement:
+        //to implement:
+        int getPlanId();
         SelectionPolicy* getPolicy() const;
         PlanStatus getStatus() const;
-        Plan& operator=(const Plan& other);
+        Plan::Plan( Plan&& other);
+        Plan::Plan(const Plan& other);
+
         
 
     private:
