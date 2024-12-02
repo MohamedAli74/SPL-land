@@ -299,7 +299,6 @@ Close::Close():BaseAction(){}
             {
                 backup = new Simulation(simulation); //Kareem:this assignment operator or copy construcor?
                 complete();
-                
             }
                 
         }
