@@ -5,6 +5,7 @@ using namespace std;
 using std::max;
 using std::min;
 
+
 ////////////////////////////NaiveSelection////////////////////////////
 
         NaiveSelection::NaiveSelection():lastSelectedIndex(-1){}

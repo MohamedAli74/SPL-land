@@ -4,29 +4,54 @@ using namespace std;
 #include "Simulation.h"
 using std::string;
 
-class Simulation {
-    public:
-        Simulation(const string &configFilePath);
+#include <fstream>
+#include <iostream>
+#include "Auxiliary.h"
+
+        Simulation::Simulation(const string &configFilePath):isRunning(false),planCounter(0){
+
+            string currentLine;
+            ifstream configFile(configFilePath);
+            while(getline(configFile, currentLine)){
+                if (currentLine.empty() || currentLine[0] == '#')//if we face an empty line or a comment we have to skip
+                {
+                    continue;//skips the current iteration
+                }
+                vector<string> tokens = Auxiliary::parseArguments(currentLine);
+            if (tokens[0] == "settlement") {
+                addSettlement(Settlement(tokens[1], static_cast<SettlementType>(stoi(tokens[2]))));//using the stoi function we turn the token into int then cast it to the Settlement type enum
+            } 
+            else if (tokens[0] == "facility") {
+                addFacility(FacilityType(tokens[1], static_cast<FacilityCategory>(stoi(tokens[2])),
+                    stoi(tokens[3]), stoi(tokens[4]), stoi(tokens[5]), stoi(tokens[6])));
+            } 
+            else if (tokens[0] == "plan") {
+                addPlan(getSettlement(tokens[1]), select(tokens[2]));
+            }
+        }
+        configFile.close();
+    }
+
         
-        void start()
+        void Simulation::start()
         {
             open();
             cout<< "The simulation has started";
         }
         
-        void addPlan(const Settlement &settlement, SelectionPolicy *selectionPolicy)
+        void Simulation::addPlan(const Settlement &settlement, SelectionPolicy *selectionPolicy)
         {
             Plan newplan = Plan(planCounter,settlement,selectionPolicy,facilitiesOptions);
             planCounter = planCounter + 1;
             plans.push_back(newplan);
         }
         
-        void addAction(BaseAction *action)
+        void Simulation::addAction(BaseAction *action)
         {
             actionsLog.push_back(action);
         }
         
-        bool addSettlement(Settlement settlement)
+        bool Simulation::addSettlement(Settlement settlement)
         {
             bool flag = isSettlementExists(settlement.getName());
             if (!flag)
@@ -37,7 +62,7 @@ class Simulation {
             return true;//succeeded to add
         }
         
-        bool addFacility(FacilityType facility)
+        bool Simulation::addFacility(FacilityType facility)
         {
             bool flag = true;
             for(FacilityType facility1: facilitiesOptions)
@@ -56,7 +81,7 @@ class Simulation {
             
         }
         
-        bool isSettlementExists(const string &settlementName)
+        bool Simulation::isSettlementExists(const string &settlementName)
         {
             bool flag = true;
             for(Settlement settelment: settlements)
@@ -69,7 +94,7 @@ class Simulation {
             return flag;
 
         }
-        Settlement &getSettlement(const string &settlementName)
+        Settlement &Simulation::getSettlement(const string &settlementName)
         {
             for(Settlement settelment: settlements)
             {
@@ -79,7 +104,7 @@ class Simulation {
                 }
             }
         }
-        Plan &getPlan(const int planID)
+        Plan &Simulation::getPlan(const int planID)
         {
             for(Plan plan: plans)
             {
@@ -90,7 +115,7 @@ class Simulation {
             }
         }
         
-        void step()
+        void Simulation::step()
         {
             if(isRunning)
             {
@@ -101,12 +126,12 @@ class Simulation {
             }
         }
         
-        void close()
+        void Simulation::close()
         {
             isRunning = false;
         }
 
-        ~Simulation()
+        Simulation::~Simulation()
         {
            for(BaseAction* action : actionsLog)
             {
@@ -114,22 +139,22 @@ class Simulation {
             }
         }
 
-        void open()
+        void Simulation::open()
         {
             isRunning = true;
         }
 
-        vector<Plan> &getPlans() 
+        vector<Plan> &Simulation::getPlans() 
         {
             return plans;
         }
         
-        vector<FacilityType> &getOptions() 
+        vector<FacilityType> &Simulation::getOptions() 
         {
             return facilitiesOptions;
         }
         
-        bool PlanExists(const int planID) 
+        bool Simulation::PlanExists(const int planID) 
         {
             for(Plan plan : plans)
             {
@@ -140,16 +165,22 @@ class Simulation {
             }
             return false;
         }
-        vector<BaseAction*> &getLogActions() 
+        vector<BaseAction*> &Simulation::getLogActions() 
         {
             return actionsLog;
         }
 
-    private:
-        bool isRunning;
-        int planCounter; //For assigning unique plan IDs
-        vector<BaseAction*> actionsLog;
-        vector<Plan> plans;
-        vector<Settlement> settlements;
-        vector<FacilityType> facilitiesOptions;
-};
+        SelectionPolicy* Simulation::select(const string& selectionPolicy){
+            if(selectionPolicy == "nve"){
+                return new NaiveSelection();
+            }  
+             else if(selectionPolicy == "bal"){
+                return new BalancedSelection(0,0,0);
+            } 
+             else if(selectionPolicy == "eco"){
+                return new EconomySelection();
+            } 
+             else if(selectionPolicy == "env"){
+                return new SustainabilitySelection();
+            }
+        }

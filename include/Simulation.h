@@ -24,6 +24,7 @@ class Simulation {
         void step();
         void close();
         void open();
+        SelectionPolicy* select(const string& selectionPolicy);
 
         vector<Plan> &getPlans();
         vector<FacilityType> &getOptions();
