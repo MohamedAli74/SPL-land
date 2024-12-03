@@ -8,7 +8,6 @@ class Simulation {
     public:
         Simulation(const string &configFilePath);
         
-        
         void start()
         {
             open();
