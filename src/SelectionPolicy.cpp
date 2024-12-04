@@ -63,8 +63,8 @@ using std::min;
             return EnvironmentScore;
         }
         int BalancedSelection::calculateDiff(FacilityType& toCalculate){
-            return max(toCalculate.getEconomyScore() + getEconomy() , toCalculate.getEnvironmentScore() + getEnviroment() , toCalculate.getLifeQualityScore() + getLife())
-                        -min(toCalculate.getEconomyScore() + getEconomy() , toCalculate.getEnvironmentScore() + getEnviroment() , toCalculate.getLifeQualityScore() + getLife());
+            return max(max(toCalculate.getEconomyScore() + getEconomy() , toCalculate.getEnvironmentScore() + getEnviroment()) , toCalculate.getLifeQualityScore() + getLife())
+                        -min(min(toCalculate.getEconomyScore() + getEconomy() , toCalculate.getEnvironmentScore() + getEnviroment() ), toCalculate.getLifeQualityScore() + getLife());
         }
 
 ////////////////////////////EconomySelection////////////////////////////
