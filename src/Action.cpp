@@ -99,7 +99,7 @@ extern Simulation* backup;
         
         AddPlan *AddPlan::clone() const 
         {
-            new AddPlan(*this);
+            return new AddPlan(*this);
         }
 
 
