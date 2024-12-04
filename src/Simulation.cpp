@@ -246,3 +246,55 @@ using std::string;
                 return new SustainabilitySelection();
             }
         }
+        ///Rule of 5///
+        Simulation::Simulation(const Simulation& other)
+        :isRunning(other.isRunning),planCounter(other.planCounter),actionsLog(),plans(other.plans),settlements(other.settlements),facilitiesOptions(other.facilitiesOptions){
+            for(BaseAction* a : other.actionsLog ){
+                actionsLog.push_back(a->clone());
+            }
+        }
+
+        Simulation::Simulation(Simulation&& other)
+        :isRunning(other.isRunning),planCounter(other.planCounter),actionsLog(),plans(other.plans),settlements(other.settlements),facilitiesOptions(other.facilitiesOptions){
+            for(BaseAction* a : other.actionsLog ){
+                actionsLog.push_back(a);
+            }
+            other.actionsLog.clear();
+        }
+
+        Simulation Simulation::operator=(const Simulation& other){
+            isRunning=other.isRunning;
+            planCounter=other.planCounter;
+            plans=other.plans;
+            settlements=other.settlements;
+            facilitiesOptions=other.facilitiesOptions;  
+            
+            for(BaseAction* a : actionsLog ){
+                delete a;
+            }
+            actionsLog.clear();
+
+            for(BaseAction* a : other.actionsLog ){
+                actionsLog.push_back(a->clone());
+            }
+        }
+
+        Simulation Simulation::operator=(Simulation&& other){
+            isRunning=other.isRunning;
+            planCounter=other.planCounter;
+            plans=other.plans;
+            settlements=other.settlements;
+            facilitiesOptions=other.facilitiesOptions; 
+
+            for(BaseAction* a : actionsLog ){
+                delete a;
+            }
+
+            actionsLog.clear();
+            
+            for(BaseAction* a : other.actionsLog ){
+                actionsLog.push_back(a);
+            }
+            other.actionsLog.clear();
+        }
+        

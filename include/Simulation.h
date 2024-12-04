@@ -31,6 +31,12 @@ class Simulation {
         bool PlanExists(const int planID);
         vector<BaseAction*> &getLogActions();
 
+        ////Rule of 5////
+        Simulation(const Simulation& other);
+        Simulation(Simulation&& other);
+        Simulation operator=(const Simulation& other);
+        Simulation operator=(Simulation&& other);
+
     private:
         bool isRunning;
         int planCounter; //For assigning unique plan IDs
