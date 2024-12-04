@@ -263,6 +263,7 @@ using std::string;
         }
 
         Simulation Simulation::operator=(const Simulation& other){
+            if(this != &other){
             isRunning=other.isRunning;
             planCounter=other.planCounter;
             plans=other.plans;
@@ -277,9 +278,11 @@ using std::string;
             for(BaseAction* a : other.actionsLog ){
                 actionsLog.push_back(a->clone());
             }
+            }
         }
 
         Simulation Simulation::operator=(Simulation&& other){
+            if(this != &other){
             isRunning=other.isRunning;
             planCounter=other.planCounter;
             plans=other.plans;
@@ -296,5 +299,6 @@ using std::string;
                 actionsLog.push_back(a);
             }
             other.actionsLog.clear();
+            }
         }
         
