@@ -1,12 +1,13 @@
 #include <iostream>
 using namespace std;
 #include <vector>
-#include "Simulation.h"
+#include "../include/Simulation.h"
 using std::string;
 
 #include <fstream>
 #include <iostream>
 #include "Auxiliary.h"
+#include "../include/Action.h"
 
         Simulation::Simulation(const string &configFilePath):isRunning(false),planCounter(0){
 
