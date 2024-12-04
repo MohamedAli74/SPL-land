@@ -30,6 +30,8 @@ class Plan {
         PlanStatus getStatus() const;
         Plan( Plan&& other);
         Plan(const Plan& other);
+        ~Plan();
+
         
 //        Plan &operator=(const Plan &) = delete;
 //        Plan &operator=(const Plan &&) = delete;

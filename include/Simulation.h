@@ -36,6 +36,7 @@ class Simulation {
         Simulation(Simulation&& other);
         Simulation operator=(const Simulation& other);
         Simulation operator=(Simulation&& other);
+        ~Simulation();
 
     private:
         bool isRunning;

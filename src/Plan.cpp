@@ -48,6 +48,7 @@ using namespace std;
                     environment_score += tmp->getEnvironmentScore();
                     underConstruction.erase(underConstruction.begin()+i);
                     facilities.push_back(tmp);
+                    tmp = nullptr;
                 }
             }
 
