@@ -103,7 +103,7 @@ using std::string;
         
         void Simulation::addPlan(const Settlement &settlement, SelectionPolicy *selectionPolicy)
         {
-            Plan newplan = Plan(planCounter,settlement,selectionPolicy,facilitiesOptions);
+            Plan newplan(planCounter,settlement,selectionPolicy,facilitiesOptions);
             planCounter = planCounter + 1;
             plans.push_back(newplan);
         }
@@ -118,7 +118,7 @@ using std::string;
             bool flag = isSettlementExists(settlement.getName());
             if (!flag)
             {
-                settlements.push_back(settlement);
+                settlements.push_back(&settlement);
                 return false;//failed to add
             }
             return true;//succeeded to add
@@ -146,9 +146,9 @@ using std::string;
         bool Simulation::isSettlementExists(const string &settlementName)
         {
             bool flag = true;
-            for(Settlement &settelment: settlements)
+            for(Settlement *settlement: settlements)
             {
-                if (settelment.getName()==settlementName)
+                if (settlement->getName()==settlementName)
                 {
                     flag = false;
                 }
@@ -158,11 +158,11 @@ using std::string;
         }
         Settlement &Simulation::getSettlement(const string &settlementName)
         {
-            for(Settlement settelment: settlements)
+            for(Settlement *settlement: settlements)
             {
-                if (settelment.getName()==settlementName)
+                if (settlement->getName()==settlementName)
                 {
-                    return settelment;
+                    return *settlement;
                 }
             }
         }
@@ -181,7 +181,7 @@ using std::string;
         {
             if(isRunning)
             {
-                for(Plan plan : plans)
+                for(Plan &plan : plans)
                 {
                     plan.step();
                 }
@@ -232,7 +232,7 @@ using std::string;
             return actionsLog;
         }
 
-        SelectionPolicy* Simulation::select(const string& selectionPolicy){
+        SelectionPolicy* Simulation::select(const string& selectionPolicy) const{
             if(selectionPolicy == "nve"){
                 return new NaiveSelection();
             }  
@@ -266,10 +266,19 @@ using std::string;
             if(this != &other){
             isRunning=other.isRunning;
             planCounter=other.planCounter;
-            plans=other.plans;
-            settlements=other.settlements;
-            facilitiesOptions=other.facilitiesOptions;  
+
+            plans=vector<Plan>();
+            for(const Plan &p : other.plans){
+                plans.push_back(p);
+            }
             
+            settlements=other.settlements;
+
+            facilitiesOptions=vector<FacilityType>();
+            for(const FacilityType &p : other.facilitiesOptions)
+            {
+                facilitiesOptions.push_back(p);
+            }
             for(BaseAction* a : actionsLog ){
                 delete a;
             }
@@ -279,15 +288,34 @@ using std::string;
                 actionsLog.push_back(a->clone());
             }
             }
+            return *this;
         }
 
         Simulation Simulation::operator=(Simulation&& other){
             if(this != &other){
             isRunning=other.isRunning;
             planCounter=other.planCounter;
-            plans=other.plans;
-            settlements=other.settlements;
-            facilitiesOptions=other.facilitiesOptions; 
+
+            plans=vector<Plan>();
+            for(const Plan &p : other.plans){
+                plans.push_back(p);
+            }
+
+            for(Settlement* s : settlements ){
+                delete s;
+            }
+
+            settlements.clear();
+            
+            for(Settlement* s : other.settlements ){
+                settlements.push_back(s);
+            }
+
+            facilitiesOptions=vector<FacilityType>();
+            for(const FacilityType &p : other.facilitiesOptions)
+            {
+                facilitiesOptions.push_back(p);
+            } 
 
             for(BaseAction* a : actionsLog ){
                 delete a;
@@ -300,5 +328,7 @@ using std::string;
             }
             other.actionsLog.clear();
             }
+
+        return *this;    
         }
         

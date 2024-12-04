@@ -111,3 +111,7 @@ using namespace std;
         {
             other.selectionPolicy = nullptr;
         }
+
+        SelectionPolicy* Plan::getPolicy() const{
+            return selectionPolicy;
+        }

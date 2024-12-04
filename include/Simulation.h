@@ -24,7 +24,7 @@ class Simulation {
         void step();
         void close();
         void open();
-        SelectionPolicy* select(const string& selectionPolicy);
+        SelectionPolicy* select(const string& selectionPolicy) const;
 
         vector<Plan> &getPlans();
         vector<FacilityType> &getOptions();
@@ -43,6 +43,6 @@ class Simulation {
         int planCounter; //For assigning unique plan IDs
         vector<BaseAction*> actionsLog;
         vector<Plan> plans;
-        vector<Settlement> settlements;
+        vector<Settlement*> settlements;
         vector<FacilityType> facilitiesOptions;
 };
