@@ -30,6 +30,7 @@ class Plan {
         PlanStatus getStatus() const;
         Plan( Plan&& other);
         Plan(const Plan& other);
+        ~Plan();
 
         
 
