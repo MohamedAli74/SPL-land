@@ -146,7 +146,7 @@ using std::string;
         bool Simulation::isSettlementExists(const string &settlementName)
         {
             bool flag = true;
-            for(Settlement settelment: settlements)
+            for(Settlement &settelment: settlements)
             {
                 if (settelment.getName()==settlementName)
                 {
@@ -168,7 +168,7 @@ using std::string;
         }
         Plan &Simulation::getPlan(const int planID)
         {
-            for(Plan plan: plans)
+            for(Plan &plan: plans)
             {
                 if (plan.getPlanId() == planID)
                 {
@@ -218,7 +218,7 @@ using std::string;
         
         bool Simulation::PlanExists(const int planID) 
         {
-            for(Plan plan : plans)
+            for(Plan &plan : plans)
             {
                 if (plan.getPlanId() == planID)
                 {
