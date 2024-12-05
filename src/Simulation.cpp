@@ -20,7 +20,7 @@ using std::string;
                 }
                 vector<string> tokens = Auxiliary::parseArguments(currentLine);
             if (tokens[0] == "settlement") {
-                addSettlement(Settlement(tokens[1], static_cast<SettlementType>(stoi(tokens[2]))));//using the stoi function we turn the token into int then cast it to the Settlement type enum
+                addSettlement(new Settlement(tokens[1], static_cast<SettlementType>(stoi(tokens[2]))));//using the stoi function we turn the token into int then cast it to the Settlement type enum
             } 
             else if (tokens[0] == "facility") {
                 addFacility(FacilityType(tokens[1], static_cast<FacilityCategory>(stoi(tokens[2])),
@@ -113,25 +113,14 @@ using std::string;
             actionsLog.push_back(action);
         }
         
-        bool Simulation::addSettlement(Settlement settlement)
-        {
-            bool flag = isSettlementExists(settlement.getName());
-            if (!flag)
-            {
-                settlements.push_back(&settlement);
-                return false;//failed to add
-            }
-            return true;//succeeded to add
-        }
-        
         bool Simulation::addFacility(FacilityType facility)
         {
-            bool flag = true;
+            bool flag = false;
             for(FacilityType facility1: facilitiesOptions)
             {
                 if (facility1.getName() == facility.getName())
                 {
-                    flag = false;
+                    flag = true;
                 }
             }
             if (!flag)
@@ -145,17 +134,28 @@ using std::string;
         
         bool Simulation::isSettlementExists(const string &settlementName)
         {
-            bool flag = true;
             for(Settlement *settlement: settlements)
             {
                 if (settlement->getName()==settlementName)
                 {
-                    flag = false;
+                    return true;
                 }
             }
-            return flag;
+            return false;
 
         }
+        bool Simulation::addSettlement(Settlement *settlement)
+        {
+            bool flag = isSettlementExists(settlement->getName());
+            if (flag == false)
+            {
+                settlements.push_back(settlement);
+                flag = isSettlementExists(settlement->getName());
+                return true;//succeeded to add
+            }
+            return false;//failed to add
+        }
+        
         Settlement &Simulation::getSettlement(const string &settlementName)
         {
             for(Settlement *settlement: settlements)

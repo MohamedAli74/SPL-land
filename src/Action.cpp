@@ -23,7 +23,7 @@ extern Simulation* backup;
         void BaseAction::error(string errorMsg)
         {
             this -> status = ActionStatus :: ERROR;
-            std::cout << "Error: " << errorMsg;
+            std::cout << "Error:" << errorMsg << endl;
         }
         
         const string &BaseAction::getErrorMsg() const
@@ -67,14 +67,15 @@ extern Simulation* backup;
              else if(selectionPolicy == "env"){
                 policy = new SustainabilitySelection();
             }  
-            else{
+            else
+            {
                 flag = false;
             }
         }
         
         void AddPlan::act(Simulation &simulation) 
         {
-            if (!simulation.isSettlementExists(settlementName)|!flag)
+            if (simulation.isSettlementExists(settlementName) == false | flag == false)
             {
                 error("Cannot create this plan");
             }
@@ -87,7 +88,7 @@ extern Simulation* backup;
         
         const string AddPlan::toString() const 
         {
-            if (getStatus() == ActionStatus ::COMPLETED)
+            if (getStatus() == ActionStatus::COMPLETED)
             {
                 return "Plan added: " + settlementName+" " + selectionPolicy + " COMPLETED";
             }
@@ -109,11 +110,15 @@ extern Simulation* backup;
         AddSettlement::AddSettlement(const string &settlementName,SettlementType settlementType)
             :BaseAction(),settlementName(settlementName),settlementType(settlementType){}
         
-        void AddSettlement::act(Simulation &simulation) {
-            if(simulation.isSettlementExists(settlementName)){
+        void AddSettlement::act(Simulation &simulation) 
+        {
+            if(simulation.isSettlementExists(settlementName) == true)
+            {
                 this->error("Settlement already exists");
-            }else{
-            simulation.addSettlement(Settlement(settlementName , settlementType));
+            }
+            else
+            {
+            simulation.addSettlement(new Settlement(settlementName , settlementType));
             this->complete();
             }
         }
