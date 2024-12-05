@@ -126,12 +126,12 @@ using std::string;
         
         bool Simulation::addFacility(FacilityType facility)
         {
-            bool flag = true;
+            bool flag = false;
             for(FacilityType facility1: facilitiesOptions)
             {
                 if (facility1.getName() == facility.getName())
                 {
-                    flag = false;
+                    flag = true;
                 }
             }
             if (!flag)
@@ -145,12 +145,12 @@ using std::string;
         
         bool Simulation::isSettlementExists(const string &settlementName)
         {
-            bool flag = true;
+            bool flag = false;
             for(Settlement *settlement: settlements)
             {
                 if (settlement->getName()==settlementName)
                 {
-                    flag = false;
+                    flag = true;
                 }
             }
             return flag;
