@@ -80,12 +80,12 @@ extern Simulation* backup;
         
         void AddPlan::act(Simulation &simulation) 
         {
-            if (simulation.isSettlementExists(settlementName)==false|flag==false)
             if (simulation.isSettlementExists(settlementName) == false | flag == false)
             {
                 error("Cannot create this plan");
-            }else{
-                simulation.addPlan(simulation.getSettlement(settlementName),policy);
+            }else
+            {
+                simulation.addPlan(*simulation.getSettlement(settlementName),policy);
                 complete();
             }
         }
@@ -188,8 +188,11 @@ extern Simulation* backup;
 
         PrintPlanStatus::PrintPlanStatus(int planId):BaseAction(),planId(planId){}
         
-        void PrintPlanStatus::act(Simulation &simulation) {
-            if(simulation.PlanExists(planId))
+        void PrintPlanStatus::act(Simulation &simulation) 
+        {
+            cout << "counter= "+to_string(simulation.getCounter())  << endl;
+            cout << "planId= "+to_string(planId) <<endl; 
+            if(simulation.getCounter() > planId)
             {
                 std::cout << simulation.getPlan(planId).toString();
                 complete();

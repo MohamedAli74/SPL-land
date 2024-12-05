@@ -3,31 +3,36 @@ using namespace std;
 #include <vector>
 #include "../include/Simulation.h"
 using std::string;
-
 #include <fstream>
+#include <sstream>
 #include <iostream>
 #include "Auxiliary.h"
 #include "../include/Action.h"
 
-        Simulation::Simulation(const string &configFilePath):isRunning(false),planCounter(0){
-
-            string currentLine;
+        Simulation::Simulation(const string &configFilePath):isRunning(false),planCounter(0), actionsLog(), plans(), settlements(), facilitiesOptions()
+        {     
             ifstream configFile(configFilePath);
-            while(getline(configFile, currentLine)){
-                if (currentLine.empty() || currentLine[0] == '#')//if we face an empty line or a comment we have to skip
-                {
-                    continue;//skips the current iteration
-                }
-                vector<string> tokens = Auxiliary::parseArguments(currentLine);
-            if (tokens[0] == "settlement") {
+             string currentLine;
+            while(getline(configFile, currentLine))
+            {
+                
+            if (currentLine.empty() || currentLine[0] == '#')//if we face an empty line or a comment we have to skip
+            {
+                continue;//skips the current iteration
+            }
+            vector<string> tokens = Auxiliary::parseArguments(currentLine);
+            if (tokens[0] == "settlement") 
+            {
                 addSettlement(new Settlement(tokens[1], static_cast<SettlementType>(stoi(tokens[2]))));//using the stoi function we turn the token into int then cast it to the Settlement type enum
             } 
-            else if (tokens[0] == "facility") {
+            else if (tokens[0] == "facility") 
+            {
                 addFacility(FacilityType(tokens[1], static_cast<FacilityCategory>(stoi(tokens[2])),
                     stoi(tokens[3]), stoi(tokens[4]), stoi(tokens[5]), stoi(tokens[6])));
             } 
-            else if (tokens[0] == "plan") {
-                addPlan(getSettlement(tokens[1]), select(tokens[2]));
+            else if (tokens[0] == "plan") 
+            {
+                addPlan(*getSettlement(tokens[1]), select(tokens[2]));
             }
         }
         configFile.close();
@@ -42,7 +47,8 @@ using std::string;
                 getline(cin,currentLine);
                 vector<string> tokens = Auxiliary::parseArguments(currentLine);
 
-                if (tokens[0] == "settlement") {
+                if (tokens[0] == "settlement") 
+                {
             BaseAction *newSettlement = new AddSettlement(tokens[1], static_cast<SettlementType>(stoi(tokens[2])));
             newSettlement->act(*this);
             addAction(newSettlement);
@@ -156,13 +162,13 @@ using std::string;
             return false;//failed to add
         }
         
-        Settlement &Simulation::getSettlement(const string &settlementName)
+        Settlement *Simulation::getSettlement(const string &settlementName)
         {
             for(Settlement *settlement: settlements)
             {
                 if (settlement->getName()==settlementName)
                 {
-                    return *settlement;
+                    return settlement;
                 }
             }
         }
@@ -231,8 +237,13 @@ using std::string;
         {
             return actionsLog;
         }
+        int Simulation::getCounter()
+        {
+            return planCounter;
+        }
 
-        SelectionPolicy* Simulation::select(const string& selectionPolicy) const{
+        SelectionPolicy* Simulation::select(const string& selectionPolicy) const
+        {
             if(selectionPolicy == "nve"){
                 return new NaiveSelection();
             }  
@@ -332,3 +343,29 @@ using std::string;
         return *this;    
         }
         
+/*settlement taybe 1
+settlement taybe 2
+Error:Settlement already exists
+plan taybe env
+plan tira eco
+Error:Cannot create this plan
+facility school 3 2 1 1 1
+facility cafe 3 3 2 1 2
+facility home 2 1 1 1 1
+facility park 3 1 2 2 2
+facility restaurant 3 2 3 2 1
+facility shop 1 2 1 2 3
+log
+settlement taybe 2 COMPLETED
+settlement taybe 1 ERROR
+Plan taybe env COMPLETED
+Plan tira eco ERROR
+Facility school 3 2 1 1 1 COMPLETED
+Facility cafe 3 3 2 1 1 COMPLETED
+Facility home 2 1 1 1 1 COMPLETED
+Facility park 3 1 2 2 2 COMPLETED
+Facility restaurant 3 2 3 2 2 COMPLETED
+Facility shop 1 2 1 2 2 COMPLETED
+step 1   
+plan 3
+        */
