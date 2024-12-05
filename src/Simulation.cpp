@@ -134,19 +134,11 @@ using std::string;
         
         bool Simulation::isSettlementExists(const string &settlementName)
         {
-<<<<<<< HEAD
-=======
-            bool flag = false;
->>>>>>> 6b84e7bd17ba4479b83b3d10616e29a1eb897301
             for(Settlement *settlement: settlements)
             {
                 if (settlement->getName()==settlementName)
                 {
-<<<<<<< HEAD
                     return true;
-=======
-                    flag = true;
->>>>>>> 6b84e7bd17ba4479b83b3d10616e29a1eb897301
                 }
             }
             return false;
