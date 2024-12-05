@@ -75,12 +75,14 @@ extern Simulation* backup;
         
         void AddPlan::act(Simulation &simulation) 
         {
+<<<<<<< HEAD
             if (simulation.isSettlementExists(settlementName) == false | flag == false)
+=======
+            if (simulation.isSettlementExists(settlementName)==false|flag==false)
+>>>>>>> 70e0cda581b9a8300e4090adf33971ff6a292070
             {
                 error("Cannot create this plan");
-            }
-            else
-            {
+            }else{
                 simulation.addPlan(simulation.getSettlement(settlementName),policy);
                 complete();
             }
