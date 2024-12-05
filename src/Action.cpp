@@ -94,11 +94,11 @@ extern Simulation* backup;
         {
             if (getStatus() == ActionStatus::COMPLETED)
             {
-                return "Plan added: " + settlementName+" " + selectionPolicy + " COMPLETED";
+                return "Plan " + settlementName+" " + selectionPolicy + " COMPLETED";
             }
             else
             {
-                return "Cannot create this plan";
+                return "Plan " + settlementName+" " + selectionPolicy + " ERROR";
             }
         }
         
@@ -131,8 +131,16 @@ extern Simulation* backup;
             return new AddSettlement(*this);
         }
         
-        const string AddSettlement::toString() const {
-            return "settlement " + settlementName + " " + std::to_string(int(settlementType));
+        const string AddSettlement::toString() const 
+        {
+            if (ActionStatus::COMPLETED == getStatus())
+            {
+                return "settlement " + settlementName + " " + std::to_string(int(settlementType)) + " COMPLETED";
+            }
+            else
+            {
+                return "settlement " + settlementName + " " + std::to_string(int(settlementType)) + " ERROR";
+            }
         }
 
 ////////////////////////////AddFacility////////////////////////////
@@ -166,11 +174,12 @@ extern Simulation* backup;
         {
             if (ActionStatus::COMPLETED == getStatus())
             {
-                return "Facility added: " +facilityName+" " + to_string(int(facilityCategory))+" " + to_string(price)+" " + to_string(lifeQualityScore)+ " "+to_string(economyScore)+" " + to_string(economyScore) + " Completed";
+                return "Facility " +facilityName+" " + to_string(int(facilityCategory))+" " + to_string(price)+" " + to_string(lifeQualityScore)+ " "+to_string(economyScore)+" " + to_string(economyScore) + " COMPLETED";
             }
             else
             {
-                return "Facility already exists";
+                return "Facility " +facilityName+" " + to_string(int(facilityCategory))+" " + to_string(price)+" " + to_string(lifeQualityScore)+ " "+to_string(economyScore)+" " + to_string(economyScore) + " ERROR";
+
             }
         }
     
@@ -180,8 +189,9 @@ extern Simulation* backup;
         PrintPlanStatus::PrintPlanStatus(int planId):BaseAction(),planId(planId){}
         
         void PrintPlanStatus::act(Simulation &simulation) {
-            if(simulation.PlanExists(planId)){
-                std::cout << simulation.getPlan(planId).toString() ;
+            if(simulation.PlanExists(planId))
+            {
+                std::cout << simulation.getPlan(planId).toString();
                 complete();
             }else
             {
@@ -197,11 +207,11 @@ extern Simulation* backup;
         {
             if (ActionStatus::COMPLETED == getStatus())
             {
-                return "planId: "+planId;
+                return "planId "+to_string(planId)+" COMPLETED";
             }
             else
             {
-                return "Plan doesn't exist";
+                return "planId "+to_string(planId)+" ERROR";
             }
         }
         
@@ -234,11 +244,11 @@ extern Simulation* backup;
         {
             if (ActionStatus::COMPLETED == getStatus())
             {
-                return "planId: "+to_string(planId) + "\npreviousPolicy: "+s+ "\nnewPolicy: "+ newPolicy; 
+                return "planId "+to_string(planId) + "\npreviousPolicy: "+s+ "\nnewPolicy: "+ newPolicy + " COMPLETED"; 
             }
             else
             {
-                return "Cannot change selection policy";
+                return "planId "+to_string(planId) + "\npreviousPolicy: "+s+ "\nnewPolicy: "+ newPolicy + " ERROR"; 
             }
         }
 
