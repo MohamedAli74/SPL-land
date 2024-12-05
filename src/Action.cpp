@@ -47,7 +47,7 @@ extern Simulation* backup;
             }
         }
         
-        const string SimulateStep::toString() const {
+        const string SimulateStep::toString() const { 
             return "step " + numOfSteps;
         }
         
