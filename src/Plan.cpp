@@ -70,7 +70,7 @@ using namespace std;
             underConstruction.push_back(facility);
         }
         const string Plan::toString() const{
-            string s = "PlanID: " + to_string(int(plan_id)) + "\n, SettlementName: " + settlement.getName() + "\n PlanStatus: " +to_string(int(status)) +"/n SelectionPolicy: " + selectionPolicy->toString() + "\n LifeQualityScore : " + to_string(life_quality_score) + "\n EconomyScore : " + to_string(economy_score) + "\n EnvironmentScore : " + to_string(environment_score) + "\n" ;
+            string s = "PlanID: " + to_string(int(plan_id)) + "\nSettlementName: " + settlement.getName() + "\nPlanStatus: " +to_string(int(status)) +"\nSelectionPolicy: " + selectionPolicy->toString() + "\nLifeQualityScore : " + to_string(life_quality_score) + "\nEconomyScore : " + to_string(economy_score) + "\nEnvironmentScore : " + to_string(environment_score) + "\n" ;
             for(Facility* f : facilities){
                 s=s+f->toString();
             } 

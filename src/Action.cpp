@@ -80,6 +80,7 @@ extern Simulation* backup;
         
         void AddPlan::act(Simulation &simulation) 
         {
+            if (simulation.isSettlementExists(settlementName)==false|flag==false)
             if (simulation.isSettlementExists(settlementName) == false | flag == false)
             {
                 error("Cannot create this plan");
@@ -165,7 +166,7 @@ extern Simulation* backup;
         {
             if (ActionStatus::COMPLETED == getStatus())
             {
-                return "Facility added: " +facilityName+" " + to_string(int(facilityCategory)) + to_string(price) + to_string(lifeQualityScore)+ " "+to_string(economyScore)+" " + to_string(economyScore) + " Completed";
+                return "Facility added: " +facilityName+" " + to_string(int(facilityCategory))+" " + to_string(price)+" " + to_string(lifeQualityScore)+ " "+to_string(economyScore)+" " + to_string(economyScore) + " Completed";
             }
             else
             {
@@ -233,7 +234,7 @@ extern Simulation* backup;
         {
             if (ActionStatus::COMPLETED == getStatus())
             {
-                return "planId: "+to_string(planId) + "/n previousPolicy: "+s+ "/n newPolicy: "+ newPolicy; 
+                return "planId: "+to_string(planId) + "\npreviousPolicy: "+s+ "\nnewPolicy: "+ newPolicy; 
             }
             else
             {
