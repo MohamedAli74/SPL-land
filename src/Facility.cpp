@@ -58,5 +58,5 @@
             return status;
         }
         const string Facility::toString() const{
-            return "FacilityName = "+name +"\nFacilityStatus = "+ std::to_string(int(status));
+            return "FacilityName: "+name +"\nFacilityStatus: "+ std::to_string(int(status));
         }

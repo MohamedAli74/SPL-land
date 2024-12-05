@@ -228,7 +228,7 @@ extern Simulation* backup;
         {
             if (ActionStatus::COMPLETED == getStatus())
             {
-                return "planId: "+to_string(planId) + "\n previousPolicy: "+s+ "\n newPolicy: "+ newPolicy; 
+                return "planId: "+to_string(planId) + "\npreviousPolicy: "+s+ "\nnewPolicy: "+ newPolicy; 
             }
             else
             {
