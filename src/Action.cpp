@@ -314,7 +314,7 @@ Close::Close():BaseAction(){}
         BackupSimulation::BackupSimulation():BaseAction(){}
         void BackupSimulation::act(Simulation &simulation)
         {
-            if (backup == nullptr||backup != &simulation)
+            if (backup != &simulation)
             {
                 delete backup;
                 backup = new Simulation(simulation); //Kareem:this assignment operator or copy construcor?
