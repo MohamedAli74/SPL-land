@@ -314,10 +314,15 @@ Close::Close():BaseAction(){}
         BackupSimulation::BackupSimulation():BaseAction(){}
         void BackupSimulation::act(Simulation &simulation)
         {
-            if (backup != &simulation)
+            if(backup == nullptr){
+
+            }
+            else if (backup != &simulation)
+                backup = new Simulation(simulation);
+                complete();
             {
                 delete backup;
-                backup = new Simulation(simulation); //Kareem:this assignment operator or copy construcor?
+                backup = &simulation;
                 complete();
             }
                 
