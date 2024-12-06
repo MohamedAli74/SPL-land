@@ -12,7 +12,6 @@ extern Simulation* backup;
     ActionStatus BaseAction::getStatus() const
         {
             return status;
-        
         }
 
         void BaseAction::complete()
@@ -70,6 +69,7 @@ extern Simulation* backup;
                 policy = new EconomySelection();
             } 
              else if(selectionPolicy == "env"){
+                
                 policy = new SustainabilitySelection();
             }  
             else
@@ -83,9 +83,8 @@ extern Simulation* backup;
             if (simulation.isSettlementExists(settlementName) == false | flag == false)
             {
                 error("Cannot create this plan");
-            }else
-            {
-                simulation.addPlan(*simulation.getSettlement(settlementName),policy);
+            }else{
+                simulation.addPlan(simulation.getSettlement(settlementName),policy);
                 complete();
             }
         }
@@ -188,9 +187,14 @@ extern Simulation* backup;
 
         PrintPlanStatus::PrintPlanStatus(int planId):BaseAction(),planId(planId){}
         
+<<<<<<< HEAD
         void PrintPlanStatus::act(Simulation &simulation) 
         {
             if(simulation.getCounter() > planId)
+=======
+        void PrintPlanStatus::act(Simulation &simulation) {
+            if(simulation.PlanExists(planId))
+>>>>>>> 923ca93aaac81bfee2e9bba165741f2c11cd4f1b
             {
                 std::cout << simulation.getPlan(planId).toString();
                 complete();
@@ -242,7 +246,7 @@ extern Simulation* backup;
         }
 
         const string ChangePlanPolicy::toString() const 
-        {
+        {   
             if (ActionStatus::COMPLETED == getStatus())
             {
                 return "planId "+to_string(planId) + "\npreviousPolicy: "+s+ "\nnewPolicy: "+ newPolicy + " COMPLETED"; 
