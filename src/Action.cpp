@@ -70,9 +70,6 @@ extern Simulation* backup;
             } 
              else if(selectionPolicy == "env"){
                 
-                //toRemove
-                cout << "entered the right if" << endl;
-                
                 policy = new SustainabilitySelection();
             }  
             else
