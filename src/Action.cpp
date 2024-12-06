@@ -84,7 +84,7 @@ extern Simulation* backup;
             {
                 error("Cannot create this plan");
             }else{
-                simulation.addPlan(simulation.getSettlement(settlementName),policy);
+                simulation.addPlan(*simulation.getSettlement(settlementName),policy);
                 complete();
             }
         }
@@ -187,14 +187,9 @@ extern Simulation* backup;
 
         PrintPlanStatus::PrintPlanStatus(int planId):BaseAction(),planId(planId){}
         
-<<<<<<< HEAD
         void PrintPlanStatus::act(Simulation &simulation) 
         {
             if(simulation.getCounter() > planId)
-=======
-        void PrintPlanStatus::act(Simulation &simulation) {
-            if(simulation.PlanExists(planId))
->>>>>>> 923ca93aaac81bfee2e9bba165741f2c11cd4f1b
             {
                 std::cout << simulation.getPlan(planId).toString();
                 complete();

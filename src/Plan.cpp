@@ -31,7 +31,7 @@ using namespace std;
         {
             if(status == PlanStatus::AVALIABLE)
             {
-            while(underConstruction.size()<=int(settlement.getType()))
+            while(underConstruction.size() <= int(settlement.getType()))
             { //for example for a village(0) the limit is 0 + 1, and the same for the city and metropolis.
             FacilityType newfacitype = selectionPolicy -> selectFacility(facilityOptions);
             Facility* toAdd = new Facility(newfacitype,settlement.getName());

@@ -12,6 +12,7 @@ class SelectionPolicy;
 
 class Simulation {
     public:
+        int getCounter();
         Simulation(const string &configFilePath);
         void start();
         void addPlan(const Settlement &settlement, SelectionPolicy *selectionPolicy);
@@ -19,7 +20,7 @@ class Simulation {
         bool addSettlement(Settlement *settlement);
         bool addFacility(FacilityType facility);
         bool isSettlementExists(const string &settlementName);
-        Settlement &getSettlement(const string &settlementName);
+        Settlement *getSettlement(const string &settlementName);
         Plan &getPlan(const int planID);
         void step();
         void close();

@@ -3,16 +3,16 @@ using namespace std;
 #include <vector>
 #include "../include/Simulation.h"
 using std::string;
+
 #include <fstream>
-#include <sstream>
 #include <iostream>
 #include "Auxiliary.h"
 #include "../include/Action.h"
 
-        Simulation::Simulation(const string &configFilePath):isRunning(false),planCounter(0), actionsLog(), plans(), settlements(), facilitiesOptions()
-        {     
+        Simulation::Simulation(const string &configFilePath):isRunning(false),planCounter(0){
+
             ifstream configFile(configFilePath);
-             string currentLine;
+            string currentLine;
             while(getline(configFile, currentLine))
             {
                 
@@ -25,13 +25,11 @@ using std::string;
             {
                 addSettlement(new Settlement(tokens[1], static_cast<SettlementType>(stoi(tokens[2]))));//using the stoi function we turn the token into int then cast it to the Settlement type enum
             } 
-            else if (tokens[0] == "facility") 
-            {
+            else if (tokens[0] == "facility") {
                 addFacility(FacilityType(tokens[1], static_cast<FacilityCategory>(stoi(tokens[2])),
                     stoi(tokens[3]), stoi(tokens[4]), stoi(tokens[5]), stoi(tokens[6])));
             } 
-            else if (tokens[0] == "plan") 
-            {
+            else if (tokens[0] == "plan") {
                 addPlan(*getSettlement(tokens[1]), select(tokens[2]));
             }
         }
@@ -47,8 +45,7 @@ using std::string;
                 getline(cin,currentLine);
                 vector<string> tokens = Auxiliary::parseArguments(currentLine);
 
-                if (tokens[0] == "settlement") 
-                {
+                if (tokens[0] == "settlement") {
             BaseAction *newSettlement = new AddSettlement(tokens[1], static_cast<SettlementType>(stoi(tokens[2])));
             newSettlement->act(*this);
             addAction(newSettlement);
@@ -136,6 +133,10 @@ using std::string;
             }
             return false;//failed to add
             
+        }
+        int Simulation::getCounter()
+        {
+            return planCounter;
         }
         
         bool Simulation::isSettlementExists(const string &settlementName)
@@ -237,13 +238,8 @@ using std::string;
         {
             return actionsLog;
         }
-        int Simulation::getCounter()
-        {
-            return planCounter;
-        }
 
-        SelectionPolicy* Simulation::select(const string& selectionPolicy) const
-        {
+        SelectionPolicy* Simulation::select(const string& selectionPolicy) const{
             if(selectionPolicy == "nve"){
                 return new NaiveSelection();
             }  
