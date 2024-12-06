@@ -12,7 +12,6 @@ extern Simulation* backup;
     ActionStatus BaseAction::getStatus() const
         {
             return status;
-        
         }
 
         void BaseAction::complete()
@@ -70,6 +69,10 @@ extern Simulation* backup;
                 policy = new EconomySelection();
             } 
              else if(selectionPolicy == "env"){
+                
+                //toRemove
+                cout << "entered the right if" << endl;
+                
                 policy = new SustainabilitySelection();
             }  
             else
@@ -241,7 +244,7 @@ extern Simulation* backup;
         }
 
         const string ChangePlanPolicy::toString() const 
-        {
+        {   
             if (ActionStatus::COMPLETED == getStatus())
             {
                 return "planId "+to_string(planId) + "\npreviousPolicy: "+s+ "\nnewPolicy: "+ newPolicy + " COMPLETED"; 
