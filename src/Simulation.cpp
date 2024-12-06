@@ -21,7 +21,7 @@ using std::string;
                 continue;//skips the current iteration
             }
             vector<string> tokens = Auxiliary::parseArguments(currentLine);
-            if (tokens[0] == "settlement") 
+            if (tokens[0] == "settlement")  
             {
                 addSettlement(new Settlement(tokens[1], static_cast<SettlementType>(stoi(tokens[2]))));//using the stoi function we turn the token into int then cast it to the Settlement type enum
             } 
@@ -318,7 +318,8 @@ using std::string;
 
             settlements.clear();
             
-            for(Settlement* s : other.settlements ){
+            for(Settlement* s : other.settlements )
+            {
                 settlements.push_back(s);
             }
 
@@ -343,29 +344,3 @@ using std::string;
         return *this;    
         }
         
-/*settlement taybe 1
-settlement taybe 2
-Error:Settlement already exists
-plan taybe env
-plan tira eco
-Error:Cannot create this plan
-facility school 3 2 1 1 1
-facility cafe 3 3 2 1 2
-facility home 2 1 1 1 1
-facility park 3 1 2 2 2
-facility restaurant 3 2 3 2 1
-facility shop 1 2 1 2 3
-log
-settlement taybe 2 COMPLETED
-settlement taybe 1 ERROR
-Plan taybe env COMPLETED
-Plan tira eco ERROR
-Facility school 3 2 1 1 1 COMPLETED
-Facility cafe 3 3 2 1 1 COMPLETED
-Facility home 2 1 1 1 1 COMPLETED
-Facility park 3 1 2 2 2 COMPLETED
-Facility restaurant 3 2 3 2 2 COMPLETED
-Facility shop 1 2 1 2 2 COMPLETED
-step 1   
-plan 3
-        */

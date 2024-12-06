@@ -190,8 +190,6 @@ extern Simulation* backup;
         
         void PrintPlanStatus::act(Simulation &simulation) 
         {
-            cout << "counter= "+to_string(simulation.getCounter())  << endl;
-            cout << "planId= "+to_string(planId) <<endl; 
             if(simulation.getCounter() > planId)
             {
                 std::cout << simulation.getPlan(planId).toString();
@@ -255,7 +253,8 @@ extern Simulation* backup;
             }
         }
 
-        SelectionPolicy *ChangePlanPolicy::SelectPolicy(const string& policy, Plan& p ){
+        SelectionPolicy *ChangePlanPolicy::SelectPolicy(const string& policy, Plan& p )
+        {
             if(policy == "nve"){
                 return new NaiveSelection();
             }else if(policy == "bal"){

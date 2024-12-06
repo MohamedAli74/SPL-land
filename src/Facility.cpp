@@ -1,5 +1,6 @@
 #include "Facility.h"
 #include <iostream>
+using namespace std;
 
 ////////////////////////////FacilityType////////////////////////////
 
@@ -51,12 +52,20 @@
             return status;
         }
         
-        void Facility::setStatus(FacilityStatus status){
+        void Facility::setStatus(FacilityStatus status)
+        {
             this-> status = status;
         }
+
         const FacilityStatus& Facility::getStatus() const{
             return status;
         }
-        const string Facility::toString() const{
-            return "FacilityName: "+name +"\nFacilityStatus: "+ std::to_string(int(status)) + "\n ";
+        const string Facility::toString() const
+        {
+            if (status == FacilityStatus::OPERATIONAL)
+            {
+                return "FacilityName: "+name +"\nFacilityStatus: "+ "OPERATIONAL" + "\n ";
+
+            }
+            return "FacilityName: "+name +"\nFacilityStatus: "+ "UNDER_CONSTRUCTIONS" + "\n ";
         }

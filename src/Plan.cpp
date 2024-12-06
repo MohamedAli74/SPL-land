@@ -4,7 +4,7 @@
 using namespace std;
 
         Plan::Plan(const int planId, const Settlement &settlement, SelectionPolicy *selectionPolicy, const vector<FacilityType> &facilityOptions):
-        plan_id(planId),settlement(settlement),facilityOptions(facilityOptions),selectionPolicy(selectionPolicy),status(PlanStatus::AVALIABLE)
+        plan_id(planId),settlement(settlement),facilityOptions(facilityOptions),selectionPolicy(selectionPolicy),status(PlanStatus::AVALIABLE),life_quality_score(0),economy_score(0),environment_score(0)
         {
         }
 
@@ -27,17 +27,20 @@ using namespace std;
             Plan::selectionPolicy = selectionPolicy;
         }
 
-        void Plan::step(){
-            if(status == PlanStatus::AVALIABLE){
-            while(underConstruction.size()<=int(settlement.getType())+1)
-            { //for example for a village(0) the limit is 0 + 1, and the same for the city and metropolis. 
+        void Plan::step()
+        {
+            if(status == PlanStatus::AVALIABLE)
+            {
+            while(underConstruction.size()<=int(settlement.getType()))
+            { //for example for a village(0) the limit is 0 + 1, and the same for the city and metropolis.
             FacilityType newfacitype = selectionPolicy -> selectFacility(facilityOptions);
-            Facility* toAdd = new Facility(newfacitype,settlement.getName());//Kareem: why this reqiered
+            Facility* toAdd = new Facility(newfacitype,settlement.getName());
             addFacility(toAdd);
             }
-        }
+            }
 
-            for(int i = underConstruction.size() - 1; i >= 0; i--){
+            for(int i = underConstruction.size() - 1; i >= 0; i--)
+            {
                 underConstruction[i] -> step();    
                 //check if the facility becomes operational
                 if(underConstruction[i] -> getStatus() == FacilityStatus::OPERATIONAL)
@@ -52,13 +55,14 @@ using namespace std;
                 }
             }
 
-            if(underConstruction.size()==int(settlement.getType())){
+            if(underConstruction.size()==int(settlement.getType())+1){
                 status = PlanStatus::BUSY;
             }else{
                 if(status == PlanStatus::BUSY)
                     status = PlanStatus::AVALIABLE;
             }
         }
+
         void Plan::printStatus(){
             cout<< to_string(int(status));
         }
@@ -69,8 +73,18 @@ using namespace std;
         {
             underConstruction.push_back(facility);
         }
-        const string Plan::toString() const{
-            string s = "PlanID: " + to_string(int(plan_id)) + "\nSettlementName: " + settlement.getName() + "\nPlanStatus: " +to_string(int(status)) +"\nSelectionPolicy: " + selectionPolicy->toString() + "\nLifeQualityScore : " + to_string(life_quality_score) + "\nEconomyScore : " + to_string(economy_score) + "\nEnvironmentScore : " + to_string(environment_score) + "\n" ;
+        const string Plan::toString() const
+        {
+            string s;
+            if (status == PlanStatus::AVALIABLE )
+            {
+                s = "PlanID: " + to_string(int(plan_id)) + "\nSettlementName: " + settlement.getName() + "\nPlanStatus: " +"AVAILABE" +"\nSelectionPolicy: " + selectionPolicy->toString() + "\nLifeQualityScore : " + to_string(life_quality_score) + "\nEconomyScore : " + to_string(economy_score) + "\nEnvironmentScore : " + to_string(environment_score) + "\n" ;
+            }
+            else
+            {
+                s = "PlanID: " + to_string(int(plan_id)) + "\nSettlementName: " + settlement.getName() + "\nPlanStatus: " +"BUSY" +"\nSelectionPolicy: " + selectionPolicy->toString() + "\nLifeQualityScore : " + to_string(life_quality_score) + "\nEconomyScore : " + to_string(economy_score) + "\nEnvironmentScore : " + to_string(environment_score) + "\n" ;
+            }
+            
             for(Facility* f : facilities){
                 s=s+f->toString();
             } 
