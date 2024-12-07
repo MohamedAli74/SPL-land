@@ -8,12 +8,13 @@ using std::min;
 
 ////////////////////////////NaiveSelection////////////////////////////
 
-        NaiveSelection::NaiveSelection():lastSelectedIndex(-1){}
+        NaiveSelection::NaiveSelection():lastSelectedIndex(0){}
         
         const FacilityType& NaiveSelection::selectFacility(const vector<FacilityType>& facilitiesOptions)
         {
-            lastSelectedIndex= (lastSelectedIndex + 1) % facilitiesOptions.size() ;
-            return facilitiesOptions[lastSelectedIndex];
+            const FacilityType &temp = facilitiesOptions[lastSelectedIndex];
+            lastSelectedIndex = (lastSelectedIndex + 1) % facilitiesOptions.size();
+            return temp;
         }
         
         const string NaiveSelection::toString() const{
@@ -95,6 +96,7 @@ using std::min;
 
             }
         }
+        
         const string EconomySelection::toString() const
         {
             return "eco";
@@ -121,7 +123,9 @@ using std::min;
                     return facilitiesOptions[i];
                 }
             }
+
         }
+        
         const string SustainabilitySelection::toString() const
         {
             return "env";

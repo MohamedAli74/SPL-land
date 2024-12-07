@@ -206,6 +206,11 @@ using std::string;
             {
                 delete action;                                
             }
+            
+            for(Settlement* settlement : settlements)
+            {
+                delete settlement;                                
+            }
         }
 
         void Simulation::open()

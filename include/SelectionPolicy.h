@@ -18,6 +18,7 @@ class NaiveSelection: public SelectionPolicy {
         const string toString() const override;
         NaiveSelection *clone() const override;
         ~NaiveSelection() override = default;
+
     private:
         int lastSelectedIndex;
 };
@@ -29,6 +30,7 @@ class BalancedSelection: public SelectionPolicy {
         const string toString() const override;
         BalancedSelection *clone() const override;
         ~BalancedSelection() override = default;
+
     private:
         int LifeQualityScore;
         int EconomyScore;

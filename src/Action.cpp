@@ -43,7 +43,7 @@ extern Simulation* backup;
         }
         
         const string SimulateStep::toString() const { 
-            return "step " +  to_string(numOfSteps);
+            return "step " +  to_string(numOfSteps) +" COMPLETED";
         }
         
         SimulateStep *SimulateStep::clone() const {
@@ -55,10 +55,12 @@ extern Simulation* backup;
         AddPlan::AddPlan(const string &settlementName, const string &selectionPolicy)
         :BaseAction(),settlementName(settlementName),selectionPolicy(selectionPolicy),flag(true),policy(nullptr)
         {
-            if(selectionPolicy == "nve"){
+            if(selectionPolicy == "nve")
+            {
                 policy = new NaiveSelection();
             }  
-             else if(selectionPolicy == "bal"){
+             else if(selectionPolicy == "bal")
+             {
                 policy = new BalancedSelection(0,0,0);
             } 
              else if(selectionPolicy == "eco"){
@@ -203,11 +205,11 @@ extern Simulation* backup;
         {
             if (ActionStatus::COMPLETED == getStatus())
             {
-                return "planId "+to_string(planId)+" COMPLETED";
+                return "planStatus "+to_string(planId)+" COMPLETED";
             }
             else
             {
-                return "planId "+to_string(planId)+" ERROR";
+                return "planStatus "+to_string(planId)+" ERROR";
             }
         }
         
@@ -219,14 +221,18 @@ extern Simulation* backup;
         {  
         }
         
-        void ChangePlanPolicy::act(Simulation &simulation) {
+        void ChangePlanPolicy::act(Simulation &simulation) 
+        {
             if(simulation.PlanExists(planId)){
                 Plan & p = simulation.getPlan(planId);
                 s = p.getPolicy()->toString();
                 if(s == newPolicy){
                     error("Cannot change selection policy");
-                }else{
-                    p.setSelectionPolicy(SelectPolicy(newPolicy,p));
+                }else
+                {
+                    //delete p.getPolicy();
+                    SelectionPolicy *policy = SelectPolicy(newPolicy,p);
+                    p.setSelectionPolicy(policy);
                     complete();
                 }
             }
@@ -281,7 +287,7 @@ extern Simulation* backup;
     }
     const string PrintActionsLog::toString() const 
     {
-        return "Log "+ to_string(int(getStatus()));
+        return "Log ";
     }
 
 
@@ -302,7 +308,7 @@ Close::Close():BaseAction(){}
         }
         
         const string Close::toString() const {
-            return "Close "+ to_string(int(getStatus())); ;
+            return "Close COMMPLETED";
         }
 
 
@@ -329,7 +335,7 @@ Close::Close():BaseAction(){}
         }
         const string BackupSimulation::toString() const
         {
-            return "backup "+to_string(int(getStatus()));
+            return "backup COMPLETED";
         }
 
 ////////////////////////////RestoreSimulation////////////////////////////
