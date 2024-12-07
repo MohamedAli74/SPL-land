@@ -230,7 +230,6 @@ extern Simulation* backup;
                     error("Cannot change selection policy");
                 }else
                 {
-                    //delete p.getPolicy();
                     SelectionPolicy *policy = SelectPolicy(newPolicy,p);
                     p.setSelectionPolicy(policy);
                     complete();
@@ -287,7 +286,7 @@ extern Simulation* backup;
     }
     const string PrintActionsLog::toString() const 
     {
-        return "Log ";
+        return "Log + COMMPLETED";
     }
 
 
@@ -308,7 +307,7 @@ Close::Close():BaseAction(){}
         }
         
         const string Close::toString() const {
-            return "Close COMMPLETED";
+            return "Close COMPLETED";
         }
 
 

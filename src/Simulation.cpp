@@ -299,7 +299,7 @@ using std::string;
             }
         }
 
-        Simulation Simulation::operator=(const Simulation& other)
+        Simulation& Simulation::operator=(const Simulation& other)
         {
             if(this != &other)
             {
@@ -341,14 +341,10 @@ using std::string;
                 settlements.push_back(new Settlement(*settlement));
             }
             }
-            
-
-            
-
             return *this;
             }
 
-        Simulation Simulation::operator=(Simulation&& other){
+        Simulation& Simulation::operator=(Simulation&& other){
             if(this != &other){
             isRunning=other.isRunning;
             planCounter=other.planCounter;
