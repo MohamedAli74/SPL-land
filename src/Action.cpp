@@ -104,7 +104,8 @@ extern Simulation* backup;
             return new AddPlan(*this);
         }
 
-
+        AddPlan::AddPlan(const AddPlan& other)
+        :BaseAction(),settlementName(other.settlementName),selectionPolicy(other.selectionPolicy),flag(other.flag),policy(other.policy){}
 
 ////////////////////////////AddSettlement////////////////////////////
 
