@@ -31,7 +31,6 @@ using std::min;
         :LifeQualityScore(LifeQualityScore),EconomyScore(EconomyScore),EnvironmentScore(EnvironmentScore){}
 
         const FacilityType& BalancedSelection::selectFacility(const vector<FacilityType>& facilitiesOptions){
-            FacilityType *minDiff;
             int tmp;
             int diff = INT_MAX;
             int index = 1;
@@ -40,9 +39,9 @@ using std::min;
                 if(tmp<diff){
                     index = i;
                     diff = tmp;
-                }
-                return facilitiesOptions[index];
+                }               
             }
+            return facilitiesOptions[index];
         }
 
         const string BalancedSelection::toString() const{
