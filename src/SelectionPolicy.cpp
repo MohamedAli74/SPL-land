@@ -78,7 +78,7 @@ using std::min;
             {
                 if(facilitiesOptions[i].getCategory() == FacilityCategory :: ECONOMY)
                 {
-                    lastSelectedIndex = i;
+                    lastSelectedIndex = (i+1)%facilitiesOptions.size();
                     return facilitiesOptions[i];
                 }
 
@@ -106,7 +106,7 @@ using std::min;
             {
                 if(facilitiesOptions[i].getCategory() == FacilityCategory :: ENVIRONMENT)
                 {
-                    lastSelectedIndex = i;
+                    lastSelectedIndex = (i+1)%facilitiesOptions.size();
                     return facilitiesOptions[i];
                 }
             }

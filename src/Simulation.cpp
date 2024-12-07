@@ -255,34 +255,63 @@ using std::string;
         }
         ///Rule of 5///
         Simulation::Simulation(const Simulation& other)
-        :isRunning(other.isRunning),planCounter(other.planCounter),actionsLog(),plans(other.plans),settlements(other.settlements),facilitiesOptions(other.facilitiesOptions){
-            for(BaseAction* a : other.actionsLog ){
+        :isRunning(other.isRunning),planCounter(other.planCounter),actionsLog(),plans(),settlements(),facilitiesOptions(other.facilitiesOptions)
+        {
+
+            for(BaseAction* a : other.actionsLog )
+            {
                 actionsLog.push_back(a->clone());
             }
+
+            for(Settlement *settlement : other.settlements)
+            {
+                settlements.push_back(new Settlement(*settlement));
+            }
+
+
+            for(Plan p : other.plans)
+            {
+                plans.push_back(p);
+            }
+
         }
 
         Simulation::Simulation(Simulation&& other)
-        :isRunning(other.isRunning),planCounter(other.planCounter),actionsLog(),plans(other.plans),settlements(other.settlements),facilitiesOptions(other.facilitiesOptions){
-            for(BaseAction* a : other.actionsLog ){
+        :isRunning(other.isRunning),planCounter(other.planCounter),actionsLog(),plans(),settlements(),facilitiesOptions(other.facilitiesOptions){
+            for(BaseAction* a : other.actionsLog )
+            {
                 actionsLog.push_back(a);
             }
+            for(Settlement *settlement : other.settlements)
+            {
+                settlements.push_back(settlement);
+            }
+             other.settlements.clear();
             other.actionsLog.clear();
+            for(Plan p : other.plans)
+            {
+                plans.push_back(p);
+            }
         }
 
-        Simulation Simulation::operator=(const Simulation& other){
-            if(this != &other){
+        Simulation Simulation::operator=(const Simulation& other)
+        {
+            if(this != &other)
+            {
+
             isRunning=other.isRunning;
             planCounter=other.planCounter;
 
+
             plans=vector<Plan>();
-            for(const Plan &p : other.plans){
+            for(Plan p : other.plans)
+            {
                 plans.push_back(p);
             }
-            
-            settlements=other.settlements;
 
             facilitiesOptions=vector<FacilityType>();
-            for(const FacilityType &p : other.facilitiesOptions)
+
+            for(FacilityType p : other.facilitiesOptions)
             {
                 facilitiesOptions.push_back(p);
             }
@@ -291,12 +320,28 @@ using std::string;
             }
             actionsLog.clear();
 
-            for(BaseAction* a : other.actionsLog ){
+            for(BaseAction* a : other.actionsLog )
+            {
                 actionsLog.push_back(a->clone());
             }
+            
+            for(Settlement *settlement : settlements)
+            {
+                delete settlement;
             }
+            settlements.clear();
+            
+            for(Settlement *settlement : other.settlements)
+            {
+                settlements.push_back(new Settlement(*settlement));
+            }
+            }
+            
+
+            
+
             return *this;
-        }
+            }
 
         Simulation Simulation::operator=(Simulation&& other){
             if(this != &other){
@@ -307,8 +352,10 @@ using std::string;
             for(const Plan &p : other.plans){
                 plans.push_back(p);
             }
+            plans.clear();
 
-            for(Settlement* s : settlements ){
+            for(Settlement* s : settlements )
+            {
                 delete s;
             }
 
@@ -329,12 +376,15 @@ using std::string;
                 delete a;
             }
 
+
             actionsLog.clear();
             
-            for(BaseAction* a : other.actionsLog ){
+            for(BaseAction* a : other.actionsLog )
+            {
                 actionsLog.push_back(a);
             }
             other.actionsLog.clear();
+            other.settlements.clear();
             }
 
         return *this;    

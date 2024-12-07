@@ -32,7 +32,8 @@ using namespace std;
             if(status == PlanStatus::AVALIABLE)
             {
             while(underConstruction.size() <= int(settlement.getType()))
-            { //for example for a village(0) the limit is 0 + 1, and the same for the city and metropolis.
+            { 
+                //for example for a village(0) the limit is 0 + 1, and the same for the city and metropolis.
             FacilityType newfacitype = selectionPolicy -> selectFacility(facilityOptions);
             Facility* toAdd = new Facility(newfacitype,settlement.getName());
             addFacility(toAdd);
@@ -55,9 +56,12 @@ using namespace std;
                 }
             }
 
-            if(underConstruction.size()==int(settlement.getType())+1){
+            if(underConstruction.size()==int(settlement.getType())+1)
+            {
                 status = PlanStatus::BUSY;
-            }else{
+            }
+            else
+            {
                 if(status == PlanStatus::BUSY)
                     status = PlanStatus::AVALIABLE;
             }
@@ -115,15 +119,36 @@ using namespace std;
         }
 
         Plan::Plan(const Plan& other)
-        :plan_id(other.plan_id),settlement(other.settlement),status(other.status),facilities(other.facilities),underConstruction(other.underConstruction),facilityOptions(other.facilityOptions),life_quality_score(other.life_quality_score),economy_score(other.economy_score),environment_score(other.environment_score)
+        :plan_id(other.plan_id),settlement(other.settlement),status(other.status),facilities(),underConstruction(),facilityOptions(other.facilityOptions),life_quality_score(other.life_quality_score),economy_score(other.economy_score),environment_score(other.environment_score)
         {
-            delete selectionPolicy;
             selectionPolicy=other.selectionPolicy->clone();
+            for (Facility* facility : other.underConstruction)
+            {
+                underConstruction.push_back(new Facility(*facility));
+            }
+
+            for (Facility* facility : other.facilities)
+            {
+                facilities.push_back(new Facility(*facility));
+            }
         }
+
 
         Plan::Plan(Plan&& other):plan_id(other.plan_id),settlement(other.settlement),status(other.status),facilities(other.facilities),underConstruction(other.underConstruction),facilityOptions(other.facilityOptions),life_quality_score(other.life_quality_score),economy_score(other.economy_score),environment_score(other.environment_score),selectionPolicy(other.selectionPolicy)
         {
+            selectionPolicy = other.selectionPolicy;
             other.selectionPolicy = nullptr;
+            for (Facility* facility : other.underConstruction)
+            {
+                underConstruction.push_back(facility);
+            }
+
+            for (Facility* facility : other.facilities)
+            {
+                facilities.push_back(facility);
+            }
+            other.underConstruction.clear();
+            other.facilities.clear();
         }
 
         SelectionPolicy* Plan::getPolicy() const{

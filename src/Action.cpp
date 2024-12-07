@@ -47,7 +47,7 @@ extern Simulation* backup;
         }
         
         const string SimulateStep::toString() const { 
-            return "step " + numOfSteps;
+            return "step " +  to_string(numOfSteps);
         }
         
         SimulateStep *SimulateStep::clone() const {
@@ -315,16 +315,21 @@ Close::Close():BaseAction(){}
         BackupSimulation::BackupSimulation():BaseAction(){}
         void BackupSimulation::act(Simulation &simulation)
         {
-            if (backup != &simulation)
+            if (backup == nullptr)
             {
-                backup = new Simulation(simulation); //Kareem:this assignment operator or copy construcor?
+                backup = new Simulation(simulation); 
+                complete();
+            }
+            else
+            {
+                backup = &simulation;
                 complete();
             }
                 
         }
         BackupSimulation *BackupSimulation::clone() const 
         {
-           return new BackupSimulation(); 
+           return new BackupSimulation(*this); 
         }
         const string BackupSimulation::toString() const
         {
