@@ -3,6 +3,7 @@
 using namespace std;
 #include <string>
 extern Simulation* backup;
+
 ////////////////////////////BaseAction////////////////////////////
 
     BaseAction::BaseAction()

@@ -37,7 +37,7 @@ class BalancedSelection: public SelectionPolicy {
         int getLife() const;
         int getEconomy() const;
         int getEnviroment() const;
-        int calculateDiff(FacilityType& toCalculate);
+        int calculateDiff(const FacilityType& toCalculate,const BalancedSelection* policy);
 };
 
 class EconomySelection: public SelectionPolicy {

@@ -47,9 +47,6 @@ using namespace std;
                 if(underConstruction[i] -> getStatus() == FacilityStatus::OPERATIONAL)
                 {
                     Facility* tmp = underConstruction[i];
-                    economy_score += tmp->getEconomyScore();
-                    life_quality_score += tmp->getLifeQualityScore();
-                    environment_score += tmp->getEnvironmentScore();
                     underConstruction.erase(underConstruction.begin()+i);
                     facilities.push_back(tmp);
                     tmp = nullptr;
@@ -75,7 +72,10 @@ using namespace std;
         }
         void Plan::addFacility(Facility* facility)
         {
-            underConstruction.push_back(facility);
+            underConstruction.push_back(facility); //do we have to add something here?
+            economy_score += facility->getEconomyScore();
+            life_quality_score += facility -> getLifeQualityScore();
+            environment_score += facility -> getEnvironmentScore();
         }
         const string Plan::toString() const
         {
