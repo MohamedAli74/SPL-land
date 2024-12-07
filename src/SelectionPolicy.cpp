@@ -41,6 +41,9 @@ using std::min;
                     diff = tmp;
                 }               
             }
+            LifeQualityScore += facilitiesOptions[index].getLifeQualityScore();
+            EconomyScore += facilitiesOptions[index].getEconomyScore();
+            EnvironmentScore += facilitiesOptions[index].getEnvironmentScore(); 
             return facilitiesOptions[index];
         }
 

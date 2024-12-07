@@ -36,14 +36,11 @@ extern Simulation* backup;
         SimulateStep::SimulateStep(const int numOfSteps):BaseAction(),numOfSteps(numOfSteps)
         {}
 
-        void SimulateStep::act(Simulation &simulation) 
-        {
-            for (int i = 0; i < numOfSteps; i++)
-            {
-                for(Plan &p : simulation.getPlans())
-            {
-                p.step();
-            }
+        void SimulateStep::act(Simulation &simulation) {
+            for (int i = 0; i < numOfSteps; i++){
+                for(Plan &p : simulation.getPlans()){
+                    p.step();
+                }
             }
         }
         
