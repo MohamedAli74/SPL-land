@@ -9,7 +9,7 @@ using std::string;
 #include "Auxiliary.h"
 #include "../include/Action.h"
 
-        Simulation::Simulation(const string &configFilePath):isRunning(false),planCounter(0){
+        Simulation::Simulation(const string &configFilePath):isRunning(false),planCounter(0),actionsLog(),plans(),settlements(),facilitiesOptions(){
 
             ifstream configFile(configFilePath);
             string currentLine;
@@ -273,7 +273,6 @@ using std::string;
                 settlements.push_back(new Settlement(*settlement));
             }
 
-
             for(Plan p : other.plans)
             {
                 plans.push_back(p);
@@ -342,54 +341,51 @@ using std::string;
             }
             }
             
-
-            
-
             return *this;
             }
 
         Simulation Simulation::operator=(Simulation&& other){
+            
             if(this != &other){
-            isRunning=other.isRunning;
-            planCounter=other.planCounter;
+                isRunning=other.isRunning;
+                planCounter=other.planCounter;
 
-            plans=vector<Plan>();
-            for(const Plan &p : other.plans){
-                plans.push_back(p);
-            }
-            plans.clear();
+                plans=vector<Plan>();
+                for(const Plan &p : other.plans){
+                    plans.push_back(p);
+                }
+                plans.clear();
 
-            for(Settlement* s : settlements )
-            {
-                delete s;
-            }
+                for(Settlement* s : settlements )
+                {
+                    delete s;
+                }
 
-            settlements.clear();
+                settlements.clear();
             
-            for(Settlement* s : other.settlements )
-            {
-                settlements.push_back(s);
-            }
+                for(Settlement* s : other.settlements )
+                {
+                    settlements.push_back(s);
+                }
 
-            facilitiesOptions=vector<FacilityType>();
-            for(const FacilityType &p : other.facilitiesOptions)
-            {
-                facilitiesOptions.push_back(p);
-            } 
+                facilitiesOptions=vector<FacilityType>();
+                for(const FacilityType &p : other.facilitiesOptions)
+                {
+                    facilitiesOptions.push_back(p);
+                } 
 
-            for(BaseAction* a : actionsLog ){
-                delete a;
-            }
+                for(BaseAction* a : actionsLog ){
+                    delete a;
+                }
 
-
-            actionsLog.clear();
+                actionsLog.clear();
             
-            for(BaseAction* a : other.actionsLog )
-            {
-                actionsLog.push_back(a);
-            }
-            other.actionsLog.clear();
-            other.settlements.clear();
+                for(BaseAction* a : other.actionsLog )
+                {
+                    actionsLog.push_back(a);
+                }
+                other.actionsLog.clear();
+                other.settlements.clear();
             }
 
         return *this;    

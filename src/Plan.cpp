@@ -44,7 +44,7 @@ using namespace std;
             {
                 underConstruction[i] -> step();    
                 //check if the facility becomes operational
-                if(underConstruction[i] -> getStatus() == FacilityStatus::OPERATIONAL)
+                if(underConstruction[i] -> getStatus() == FacilityStatus::OPERATIONAL)//47
                 {
                     Facility* tmp = underConstruction[i];
                     economy_score += tmp->getEconomyScore();

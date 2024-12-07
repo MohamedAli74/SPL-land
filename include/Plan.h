@@ -31,10 +31,9 @@ class Plan {
         Plan( Plan&& other);
         Plan(const Plan& other);
         ~Plan();
-
-        
-//        Plan &operator=(const Plan &) = delete;
-//        Plan &operator=(const Plan &&) = delete;
+ 
+        Plan &operator=(const Plan &) = delete;
+        Plan &operator=(const Plan &&) = delete;
 
     private:
         int plan_id;
