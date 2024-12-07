@@ -32,13 +32,16 @@ using std::min;
 
         const FacilityType& BalancedSelection::selectFacility(const vector<FacilityType>& facilitiesOptions){
             FacilityType *minDiff;
+            int tmp;
             int diff = INT_MAX;
-            for(FacilityType f : facilitiesOptions){
-                if (calculateDiff(f)<diff){
-                    minDiff = &f;
-                    diff = calculateDiff(f);
+            int index = 1;
+            for(int i=0 ; i<facilitiesOptions.size() ;i++){
+                tmp=calculateDiff(facilitiesOptions[i],this);
+                if(tmp<diff){
+                    index = i;
+                    diff = tmp;
                 }
-                return *minDiff;
+                return facilitiesOptions[index];
             }
         }
 
@@ -62,9 +65,15 @@ using std::min;
         int BalancedSelection::getEnviroment() const{
             return EnvironmentScore;
         }
-        int BalancedSelection::calculateDiff(FacilityType& toCalculate){
-            return max(max(toCalculate.getEconomyScore() + getEconomy() , toCalculate.getEnvironmentScore() + getEnviroment()) , toCalculate.getLifeQualityScore() + getLife())
-                        -min(min(toCalculate.getEconomyScore() + getEconomy() , toCalculate.getEnvironmentScore() + getEnviroment() ), toCalculate.getLifeQualityScore() + getLife());
+        int BalancedSelection::calculateDiff(const FacilityType& toCalculate,const BalancedSelection* policy){
+
+            int updatedLife = policy->getLife() + toCalculate.getLifeQualityScore();
+            int updatedEconomy = policy->getEconomy() + toCalculate.getEconomyScore();
+            int updatedEnvironment = policy->getEnviroment() + toCalculate.getEnvironmentScore();
+
+            int output = max(updatedEconomy , max(updatedLife , updatedEnvironment))
+             - min(updatedEconomy , min(updatedLife , updatedEnvironment));
+            return output;
         }
 
 ////////////////////////////EconomySelection////////////////////////////

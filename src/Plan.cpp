@@ -29,11 +29,11 @@ using namespace std;
 
         void Plan::step(){
             if(status == PlanStatus::AVALIABLE){
-            while(underConstruction.size()<=int(settlement.getType())+1)
-            { //for example for a village(0) the limit is 0 + 1, and the same for the city and metropolis. 
-            FacilityType newfacitype = selectionPolicy -> selectFacility(facilityOptions);
-            Facility* toAdd = new Facility(newfacitype,settlement.getName());//Kareem: why this reqiered
-            addFacility(toAdd);
+                while(underConstruction.size()<=int(settlement.getType())+1)
+                { //for example for a village(0) the limit is 0 + 1, and the same for the city and metropolis. 
+                    FacilityType newfacilitytype = selectionPolicy -> selectFacility(facilityOptions);
+                    Facility* toAdd = new Facility(newfacilitytype,settlement.getName());//Kareem: why this reqiered
+                    addFacility(toAdd);
             }
         }
 
@@ -43,9 +43,6 @@ using namespace std;
                 if(underConstruction[i] -> getStatus() == FacilityStatus::OPERATIONAL)
                 {
                     Facility* tmp = underConstruction[i];
-                    economy_score += tmp->getEconomyScore();
-                    life_quality_score += tmp->getLifeQualityScore();
-                    environment_score += tmp->getEnvironmentScore();
                     underConstruction.erase(underConstruction.begin()+i);
                     facilities.push_back(tmp);
                     tmp = nullptr;
@@ -67,7 +64,10 @@ using namespace std;
         }
         void Plan::addFacility(Facility* facility)
         {
-            underConstruction.push_back(facility);
+            underConstruction.push_back(facility); //do we have to add something here?
+            economy_score += facility->getEconomyScore();
+            life_quality_score += facility -> getLifeQualityScore();
+            environment_score += facility -> getEnvironmentScore();
         }
         const string Plan::toString() const{
             string s = "PlanID: " + to_string(int(plan_id)) + "\nSettlementName: " + settlement.getName() + "\nPlanStatus: " +to_string(int(status)) +"\nSelectionPolicy: " + selectionPolicy->toString() + "\nLifeQualityScore : " + to_string(life_quality_score) + "\nEconomyScore : " + to_string(economy_score) + "\nEnvironmentScore : " + to_string(environment_score) + "\n" ;
