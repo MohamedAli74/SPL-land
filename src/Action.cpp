@@ -62,7 +62,7 @@ extern Simulation* backup;
              else if(selectionPolicy == "bal")
              {
                 policy = new BalancedSelection(0,0,0);
-            } 
+             } 
              else if(selectionPolicy == "eco"){
                 policy = new EconomySelection();
             } 
