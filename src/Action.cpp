@@ -6,9 +6,7 @@ extern Simulation* backup;
 
 ////////////////////////////BaseAction////////////////////////////
 
-    BaseAction::BaseAction()
-        {
-        }
+    BaseAction::BaseAction(){}
 
     ActionStatus BaseAction::getStatus() const
         {
