@@ -3,7 +3,7 @@
 #include <string>
 using namespace std;
 
-        Plan::Plan(const int planId, const Settlement &settlement, SelectionPolicy *selectionPolicy, const vector<FacilityType> &facilityOptions):
+        Plan::Plan(const int planId, const Settlement *settlement, SelectionPolicy *selectionPolicy, const vector<FacilityType> &facilityOptions):
         plan_id(planId),settlement(settlement),selectionPolicy(selectionPolicy),status(PlanStatus::AVALIABLE),facilities(),underConstruction(),facilityOptions(facilityOptions),life_quality_score(0),economy_score(0),environment_score(0)
         {
         }
@@ -31,11 +31,11 @@ using namespace std;
         {
             if(status == PlanStatus::AVALIABLE)
             {
-            while(int(underConstruction.size()) <= int(settlement.getType()))
+            while(int(underConstruction.size()) <= int(settlement->getType()))
             { 
                 //for example for a village(0) the limit is 0 + 1, and the same for the city and metropolis.
             FacilityType newfacitype = selectionPolicy -> selectFacility(facilityOptions);
-            Facility* toAdd = new Facility(newfacitype,settlement.getName());
+            Facility* toAdd = new Facility(newfacitype,settlement->getName());
             addFacility(toAdd);
             }
             }
@@ -56,7 +56,7 @@ using namespace std;
                 }
             }
 
-            if(int(underConstruction.size())==int(settlement.getType())+1)
+            if(int(underConstruction.size())==int(settlement->getType())+1)
             {
                 status = PlanStatus::BUSY;
             }
@@ -82,11 +82,11 @@ using namespace std;
             string s;
             if (status == PlanStatus::AVALIABLE )
             {
-                s = "PlanID: " + to_string(int(plan_id)) + "\nSettlementName: " + settlement.getName() + "\nPlanStatus: " +"AVAILABE" +"\nSelectionPolicy: " + selectionPolicy->toString() + "\nLifeQualityScore : " + to_string(life_quality_score) + "\nEconomyScore : " + to_string(economy_score) + "\nEnvironmentScore : " + to_string(environment_score) + "\n" ;
+                s = "PlanID: " + to_string(int(plan_id)) + "\nSettlementName: " + settlement->getName() + "\nPlanStatus: " +"AVAILABE" +"\nSelectionPolicy: " + selectionPolicy->toString() + "\nLifeQualityScore : " + to_string(life_quality_score) + "\nEconomyScore : " + to_string(economy_score) + "\nEnvironmentScore : " + to_string(environment_score) + "\n" ;
             }
             else
             {
-                s = "PlanID: " + to_string(int(plan_id)) + "\nSettlementName: " + settlement.getName() + "\nPlanStatus: " +"BUSY" +"\nSelectionPolicy: " + selectionPolicy->toString() + "\nLifeQualityScore : " + to_string(life_quality_score) + "\nEconomyScore : " + to_string(economy_score) + "\nEnvironmentScore : " + to_string(environment_score) + "\n" ;
+                s = "PlanID: " + to_string(int(plan_id)) + "\nSettlementName: " + settlement->getName() + "\nPlanStatus: " +"BUSY" +"\nSelectionPolicy: " + selectionPolicy->toString() + "\nLifeQualityScore : " + to_string(life_quality_score) + "\nEconomyScore : " + to_string(economy_score) + "\nEnvironmentScore : " + to_string(environment_score) + "\n" ;
             }
             
             for(Facility* f : facilities){
@@ -101,6 +101,14 @@ using namespace std;
         PlanStatus Plan::getStatus() const
         {
             return status;
+        }
+
+        const Settlement* Plan::getSettlement(){
+            return settlement;
+        }
+
+        void Plan::setSettlement(Settlement *set){
+            settlement = set;
         }
 
         //////////////////////////////////rule of 5//////////////////////////////////

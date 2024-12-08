@@ -15,7 +15,7 @@ class Simulation {
         int getCounter();
         Simulation(const string &configFilePath);
         void start();
-        void addPlan(const Settlement &settlement, SelectionPolicy *selectionPolicy);
+        void addPlan(const Settlement *settlement, SelectionPolicy *selectionPolicy);
         void addAction(BaseAction *action);
         bool addSettlement(Settlement *settlement);
         bool addFacility(FacilityType facility);
@@ -31,6 +31,7 @@ class Simulation {
         vector<FacilityType> &getOptions();
         bool PlanExists(const int planID);
         vector<BaseAction*> &getLogActions();
+        vector<Settlement*> getSettlements();
 
         ////Rule of 5////
         Simulation(const Simulation& other);

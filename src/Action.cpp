@@ -64,7 +64,7 @@ extern Simulation* backup;
             {
                 error("Cannot create this plan");
             }else{
-                simulation.addPlan(*simulation.getSettlement(settlementName),simulation.select(selectionPolicy));
+                simulation.addPlan(simulation.getSettlement(settlementName),simulation.select(selectionPolicy));
                 complete();
             }
         }

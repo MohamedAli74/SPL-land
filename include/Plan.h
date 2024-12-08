@@ -13,7 +13,7 @@ enum class PlanStatus {
 
 class Plan {
     public:
-        Plan(const int planId, const Settlement &settlement, SelectionPolicy *selectionPolicy, const vector<FacilityType> &facilityOptions);
+        Plan(const int planId, const Settlement *settlement, SelectionPolicy *selectionPolicy, const vector<FacilityType> &facilityOptions);
         const int getlifeQualityScore() const;
         const int getEconomyScore() const;
         const int getEnvironmentScore() const;
@@ -31,13 +31,15 @@ class Plan {
         Plan( Plan&& other);
         Plan(const Plan& other);
         ~Plan();
+        void setSettlement(Settlement *set);
+        const Settlement* getSettlement();
  
         Plan &operator=(const Plan &) = delete;
         Plan &operator=(const Plan &&) = delete;
 
     private:
         int plan_id;
-        const Settlement &settlement;
+        const Settlement *settlement;
         SelectionPolicy *selectionPolicy; //What happens if we change this to a reference?
         PlanStatus status;
         vector<Facility*> facilities;

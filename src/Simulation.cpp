@@ -30,7 +30,7 @@ using std::string;
                     stoi(tokens[3]), stoi(tokens[4]), stoi(tokens[5]), stoi(tokens[6])));
             } 
             else if (tokens[0] == "plan") {
-                addPlan(*getSettlement(tokens[1]), select(tokens[2]));
+                addPlan(getSettlement(tokens[1]), select(tokens[2]));
             }
         }
         configFile.close();
@@ -104,7 +104,7 @@ using std::string;
         }
     }
         
-        void Simulation::addPlan(const Settlement &settlement, SelectionPolicy *selectionPolicy)
+        void Simulation::addPlan(const Settlement *settlement, SelectionPolicy *selectionPolicy)
         {
             Plan newplan(planCounter,settlement,selectionPolicy,facilitiesOptions);
             planCounter = planCounter + 1;
@@ -240,6 +240,7 @@ using std::string;
                 return new SustainabilitySelection();
             }
         }
+
         ///Rule of 5///
 
         Simulation::~Simulation()
@@ -272,7 +273,13 @@ using std::string;
 
             for(Plan p : other.plans)
             {
-                plans.push_back(p);
+                Plan newP = Plan(p);
+                for(Settlement *s : settlements){
+                    if(s->getName() == p.getSettlement()->getName()){
+                        newP.setSettlement(s);
+                    }
+                }
+                plans.push_back(newP);
             }
 
         }
