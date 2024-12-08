@@ -6,7 +6,7 @@ extern Simulation* backup;
 
 ////////////////////////////BaseAction////////////////////////////
 
-    BaseAction::BaseAction(){}
+    BaseAction::BaseAction():errorMsg(),status(){}
 
     ActionStatus BaseAction::getStatus() const
         {
@@ -53,7 +53,7 @@ extern Simulation* backup;
 ////////////////////////////AddPlan////////////////////////////
 
         AddPlan::AddPlan(const string &settlementName, const string &selectionPolicy)
-        :BaseAction(),settlementName(settlementName),selectionPolicy(selectionPolicy),flag(true),policy(nullptr)
+        :BaseAction(),settlementName(settlementName),selectionPolicy(selectionPolicy),policy(nullptr),flag(true)
         {
             if(selectionPolicy == "nve")
             {
@@ -78,7 +78,7 @@ extern Simulation* backup;
         
         void AddPlan::act(Simulation &simulation) 
         {
-            if (simulation.isSettlementExists(settlementName) == false | flag == false)
+            if (!simulation.isSettlementExists(settlementName)|| !flag)
             {
                 error("Cannot create this plan");
             }else{
@@ -105,7 +105,7 @@ extern Simulation* backup;
         }
 
         AddPlan::AddPlan(const AddPlan& other)
-        :BaseAction(),settlementName(other.settlementName),selectionPolicy(other.selectionPolicy),flag(other.flag),policy(other.policy){}
+        :BaseAction(),settlementName(other.settlementName),selectionPolicy(other.selectionPolicy),policy(other.policy),flag(other.flag){}
 
 ////////////////////////////AddSettlement////////////////////////////
 
@@ -114,7 +114,7 @@ extern Simulation* backup;
         
         void AddSettlement::act(Simulation &simulation) 
         {
-            if(simulation.isSettlementExists(settlementName) == true)
+            if(simulation.isSettlementExists(settlementName))
             {
                 this->error("Settlement already exists");
             }
@@ -144,9 +144,8 @@ extern Simulation* backup;
 ////////////////////////////AddFacility////////////////////////////
 
         AddFacility::AddFacility(const string &facilityName, const FacilityCategory facilityCategory, const int price, const int lifeQualityScore, const int economyScore, const int environmentScore)
-        :BaseAction(),facilityName(facilityName),facilityCategory(facilityCategory),price(price),lifeQualityScore(lifeQualityScore),economyScore(economyScore),environmentScore(economyScore)
+        :BaseAction(),facilityName(facilityName),facilityCategory(facilityCategory),price(price),lifeQualityScore(lifeQualityScore),economyScore(economyScore),environmentScore(economyScore),flag(true)
         {
-            flag = true;
         }
         
         void AddFacility::act(Simulation &simulation) 
@@ -218,7 +217,7 @@ extern Simulation* backup;
 ////////////////////////////ChangePolicy////////////////////////////
 
         ChangePlanPolicy::ChangePlanPolicy(const int planId, const string &newPolicy)
-        :BaseAction(),planId(planId),newPolicy(newPolicy)
+        :BaseAction(),planId(planId),newPolicy(newPolicy),s()
         {  
         }
         
@@ -287,7 +286,7 @@ extern Simulation* backup;
     }
     const string PrintActionsLog::toString() const 
     {
-        return "Log + COMMPLETED";
+        return "Log COMMPLETED";
     }
 
 

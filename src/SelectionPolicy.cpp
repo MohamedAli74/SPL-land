@@ -35,7 +35,7 @@ using std::min;
             int tmp;
             int diff = INT_MAX;
             int index = 1;
-            for(int i=0 ; i<facilitiesOptions.size() ;i++){
+            for(int i=0 ; i<int(facilitiesOptions.size()) ;i++){
                 tmp=calculateDiff(facilitiesOptions[i],this);
                 if(tmp<diff){
                     index = i;
@@ -86,15 +86,19 @@ using std::min;
         }
         const FacilityType& EconomySelection::selectFacility(const vector<FacilityType>& facilitiesOptions)
         {
-            for(int i = lastSelectedIndex; i<=facilitiesOptions.size(); i=(i+1)%facilitiesOptions.size())
+            int answerIndex;
+            bool found=false;
+            for(int i = lastSelectedIndex; i<=int(facilitiesOptions.size()) && !found ; i=(i+1)%facilitiesOptions.size())
             {
                 if(facilitiesOptions[i].getCategory() == FacilityCategory :: ECONOMY)
                 {
                     lastSelectedIndex = (i+1)%facilitiesOptions.size();
-                    return facilitiesOptions[i];
+                    answerIndex = i;
+                    found = true;
                 }
 
             }
+            return facilitiesOptions[answerIndex];
         }
         
         const string EconomySelection::toString() const
@@ -112,18 +116,18 @@ using std::min;
         {
     
         }
-        const FacilityType& SustainabilitySelection::selectFacility(const vector<FacilityType>& facilitiesOptions)
-        {
-            for(int i = lastSelectedIndex; i <= facilitiesOptions.size(); i=(i+1)%facilitiesOptions.size())
-        
-            {
+        const FacilityType& SustainabilitySelection::selectFacility(const vector<FacilityType>& facilitiesOptions){
+            int answerIndex;
+            bool found=false;
+            for(int i = lastSelectedIndex; i <= int(facilitiesOptions.size()) && !found ; i=(i+1)%facilitiesOptions.size()){
+                
                 if(facilitiesOptions[i].getCategory() == FacilityCategory :: ENVIRONMENT)
                 {
                     lastSelectedIndex = (i+1)%facilitiesOptions.size();
-                    return facilitiesOptions[i];
+                    answerIndex =i;
                 }
             }
-
+            return facilitiesOptions[answerIndex];
         }
         
         const string SustainabilitySelection::toString() const
