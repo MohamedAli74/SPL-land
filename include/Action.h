@@ -52,7 +52,6 @@ class AddPlan : public BaseAction {
         const string settlementName;
         const string selectionPolicy;
 
-        SelectionPolicy* policy;
         bool flag;
 };
 

@@ -195,19 +195,6 @@ using std::string;
             isRunning = false;
         }
 
-        Simulation::~Simulation()
-        {
-           for(BaseAction* action : actionsLog)
-            {
-                delete action;                                
-            }
-            
-            for(Settlement* settlement : settlements)
-            {
-                delete settlement;                                
-            }
-        }
-
         void Simulation::open()
         {
             isRunning = true;
@@ -254,6 +241,21 @@ using std::string;
             }
         }
         ///Rule of 5///
+
+        Simulation::~Simulation()
+        {
+           for(BaseAction* action : actionsLog)
+            {
+                delete action;                                
+            }
+            
+            for(Settlement* settlement : settlements)
+            {
+                delete settlement;                                
+            }
+        }
+
+
         Simulation::Simulation(const Simulation& other)
         :isRunning(other.isRunning),planCounter(other.planCounter),actionsLog(),plans(),settlements(),facilitiesOptions(other.facilitiesOptions)
         {

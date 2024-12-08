@@ -53,27 +53,9 @@ extern Simulation* backup;
 ////////////////////////////AddPlan////////////////////////////
 
         AddPlan::AddPlan(const string &settlementName, const string &selectionPolicy)
-        :BaseAction(),settlementName(settlementName),selectionPolicy(selectionPolicy),policy(nullptr),flag(true)
+        :BaseAction(),settlementName(settlementName),selectionPolicy(selectionPolicy),flag(true)
         {
-            if(selectionPolicy == "nve")
-            {
-                policy = new NaiveSelection();
-            }  
-             else if(selectionPolicy == "bal")
-             {
-                policy = new BalancedSelection(0,0,0);
-             } 
-             else if(selectionPolicy == "eco"){
-                policy = new EconomySelection();
-            } 
-             else if(selectionPolicy == "env"){
-                
-                policy = new SustainabilitySelection();
-            }  
-            else
-            {
-                flag = false;
-            }
+            flag = (selectionPolicy == "nve")||(selectionPolicy == "bal")||(selectionPolicy == "eco")||(selectionPolicy == "env");
         }
         
         void AddPlan::act(Simulation &simulation) 
@@ -82,7 +64,7 @@ extern Simulation* backup;
             {
                 error("Cannot create this plan");
             }else{
-                simulation.addPlan(*simulation.getSettlement(settlementName),policy);
+                simulation.addPlan(*simulation.getSettlement(settlementName),simulation.select(selectionPolicy));
                 complete();
             }
         }
@@ -105,7 +87,7 @@ extern Simulation* backup;
         }
 
         AddPlan::AddPlan(const AddPlan& other)
-        :BaseAction(),settlementName(other.settlementName),selectionPolicy(other.selectionPolicy),policy(other.policy),flag(other.flag){}
+        :BaseAction(),settlementName(other.settlementName),selectionPolicy(other.selectionPolicy),flag(other.flag){}
 
 ////////////////////////////AddSettlement////////////////////////////
 
