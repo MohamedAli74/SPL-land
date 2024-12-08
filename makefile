@@ -1,9 +1,9 @@
 # Please implement your Makefile rules and targets below.
 # Customize this file to define how to build your project.
-all: clean bin/cRace
+all: clean bin/run
 
-bin/cRace: bin/main.o bin/Action.o bin/Auxiliary.o bin/Facility.o bin/Plan.o bin/SelectionPolicy.o bin/Simulation.o bin/Settlement.o
-	g++ -o bin/cRace bin/main.o bin/Action.o bin/Auxiliary.o bin/Facility.o bin/Plan.o bin/SelectionPolicy.o  bin/Simulation.o bin/Settlement.o
+bin/run: bin/main.o bin/Action.o bin/Auxiliary.o bin/Facility.o bin/Plan.o bin/SelectionPolicy.o bin/Simulation.o bin/Settlement.o
+	g++ -o bin/run bin/main.o bin/Action.o bin/Auxiliary.o bin/Facility.o bin/Plan.o bin/SelectionPolicy.o  bin/Simulation.o bin/Settlement.o
 
 bin/main.o: src/main.cpp
 	g++ -g -Wall -Weffc++ -std=c++11 -c -Iinclude -o bin/main.o src/main.cpp
