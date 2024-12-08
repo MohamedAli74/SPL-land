@@ -4,7 +4,7 @@
 using namespace std;
 
         Plan::Plan(const int planId, const Settlement &settlement, SelectionPolicy *selectionPolicy, const vector<FacilityType> &facilityOptions):
-        plan_id(planId),settlement(settlement),facilityOptions(facilityOptions),selectionPolicy(selectionPolicy),status(PlanStatus::AVALIABLE),life_quality_score(0),economy_score(0),environment_score(0)
+        plan_id(planId),settlement(settlement),selectionPolicy(selectionPolicy),status(PlanStatus::AVALIABLE),facilities(),underConstruction(),facilityOptions(facilityOptions),life_quality_score(0),economy_score(0),environment_score(0)
         {
         }
 
@@ -31,7 +31,7 @@ using namespace std;
         {
             if(status == PlanStatus::AVALIABLE)
             {
-            while(underConstruction.size() <= int(settlement.getType()))
+            while(int(underConstruction.size()) <= int(settlement.getType()))
             { 
                 //for example for a village(0) the limit is 0 + 1, and the same for the city and metropolis.
             FacilityType newfacitype = selectionPolicy -> selectFacility(facilityOptions);
@@ -56,7 +56,7 @@ using namespace std;
                 }
             }
 
-            if(underConstruction.size()==int(settlement.getType())+1)
+            if(int(underConstruction.size())==int(settlement.getType())+1)
             {
                 status = PlanStatus::BUSY;
             }
@@ -119,7 +119,7 @@ using namespace std;
         }
 
         Plan::Plan(const Plan& other)
-        :plan_id(other.plan_id),settlement(other.settlement),status(other.status),facilities(),underConstruction(),facilityOptions(other.facilityOptions),life_quality_score(other.life_quality_score),economy_score(other.economy_score),environment_score(other.environment_score)
+        :plan_id(other.plan_id),settlement(other.settlement),selectionPolicy(other.selectionPolicy),status(other.status),facilities(),underConstruction(),facilityOptions(other.facilityOptions),life_quality_score(other.life_quality_score),economy_score(other.economy_score),environment_score(other.environment_score)
         {
             selectionPolicy=other.selectionPolicy->clone();
             for (Facility* facility : other.underConstruction)
@@ -134,7 +134,8 @@ using namespace std;
         }
 
 
-        Plan::Plan(Plan&& other):plan_id(other.plan_id),settlement(other.settlement),status(other.status),facilities(other.facilities),underConstruction(other.underConstruction),facilityOptions(other.facilityOptions),life_quality_score(other.life_quality_score),economy_score(other.economy_score),environment_score(other.environment_score),selectionPolicy(other.selectionPolicy)
+        Plan::Plan(Plan&& other):
+        plan_id(other.plan_id),settlement(other.settlement),selectionPolicy(nullptr),status(other.status),facilities(),underConstruction(),facilityOptions(other.facilityOptions),life_quality_score(other.life_quality_score),economy_score(other.economy_score),environment_score(other.environment_score)
         {
             selectionPolicy = other.selectionPolicy;
             other.selectionPolicy = nullptr;

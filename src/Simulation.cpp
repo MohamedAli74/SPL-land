@@ -172,16 +172,11 @@ using std::string;
                     return settlement;
                 }
             }
+            return nullptr;
         }
         Plan &Simulation::getPlan(const int planID)
-        {
-            for(Plan &plan: plans)
-            {
-                if (plan.getPlanId() == planID)
-                {
-                     return plan;
-                }
-            }
+        {   
+            return plans[planID];
         }
         
         void Simulation::step()
@@ -254,7 +249,7 @@ using std::string;
              else if(selectionPolicy == "eco"){
                 return new EconomySelection();
             } 
-             else if(selectionPolicy == "env"){
+             else{
                 return new SustainabilitySelection();
             }
         }
